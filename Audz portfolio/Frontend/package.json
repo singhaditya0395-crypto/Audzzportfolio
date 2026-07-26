@@ -1,0 +1,12 @@
+{
+  "name": "aditya-portfolio-frontend",
+  "version": "1.0.0",
+  "description": "Node.js frontend presentation layer",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}

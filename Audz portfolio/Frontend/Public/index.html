@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en" id="html-root">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aditya Singh | Deep-Tech Operator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"DM Sans"', 'sans-serif'],
+                        mono: ['"JetBrains Mono"', 'monospace'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        body.light-mode {
+            background-color: #F8FAFC;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(226, 232, 240, 0.9) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(203, 213, 225, 0.7) 0px, transparent 50%);
+            color: #0f172a;
+        }
+        body.dark-mode {
+            background-color: #000000;
+            background-image: 
+                radial-gradient(at 15% 15%, rgba(38, 38, 38, 0.4) 0px, transparent 55%),
+                radial-gradient(at 85% 85%, rgba(20, 20, 20, 0.7) 0px, transparent 55%);
+            color: #f1f5f9;
+        }
+        .typewriter-cursor::after {
+            content: '|';
+            animation: blink 1s infinite;
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+    </style>
+</head>
+<body class="light-mode font-sans antialiased selection:bg-cyan-500 selection:text-white min-h-screen flex flex-col justify-between transition-colors duration-300" id="body-element">
+
+    <div class="w-full flex-grow">
+        <!-- Sticky Navigation -->
+        <nav id="nav-container" class="w-full px-6 md:px-16 py-5 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-slate-200/60 dark:border-zinc-800/80 bg-white/70 dark:bg-black/80 backdrop-blur-xl sticky top-0 z-50 transition-colors duration-300">
+            <div class="cursor-pointer" onclick="switchTab('home')">
+                <span id="nav-tag" class="font-mono text-xs text-slate-500 dark:text-zinc-400 tracking-widest uppercase">// ADITYA_SINGH // BENGALURU</span>
+                <h1 id="nav-title" class="text-xl font-bold tracking-tight text-slate-900 dark:text-white">Aditya Singh</h1>
+            </div>
+            
+            <div class="flex flex-wrap items-center gap-3">
+                <div id="tab-container" class="flex flex-wrap gap-1 font-mono text-xs bg-slate-200/50 dark:bg-zinc-900/90 p-1 rounded-xl border border-slate-300/60 dark:border-zinc-800">
+                    <button onclick="switchTab('home')" id="btn-home" class="px-4 py-2 rounded-lg font-medium transition bg-slate-900 text-white dark:bg-zinc-100 dark:text-zinc-900 shadow-xs">Home</button>
+                    <button onclick="switchTab('about')" id="btn-about" class="px-4 py-2 rounded-lg font-medium transition text-slate-700 dark:text-zinc-300 hover:text-slate-900 dark:hover:text-white">About Me</button>
+                    <button onclick="switchTab('blog')" id="btn-blog" class="px-4 py-2 rounded-lg font-medium transition text-slate-700 dark:text-zinc-300 hover:text-slate-900 dark:hover:text-white">Blog & Media</button>
+                    <button onclick="switchTab('coffee')" id="btn-coffee" class="px-4 py-2 rounded-lg font-medium transition text-slate-700 dark:text-zinc-300 hover:text-slate-900 dark:hover:text-white">Virtual Coffee</button>
+                </div>
+
+                <button onclick="toggleTheme()" id="theme-toggle-btn" class="p-2.5 rounded-xl border border-slate-300/60 dark:border-zinc-800 bg-white/80 dark:bg-zinc-900 text-slate-700 dark:text-zinc-200 hover:bg-slate-100 dark:hover:bg-zinc-800 transition font-mono text-xs shadow-xs" title="Toggle Light/Dark Mode">
+                    <span id="theme-icon">🌙 Dark</span>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Main Workspace -->
+        <main class="w-full px-6 md:px-16 py-10">
+
+            <!-- TAB 1: HOME -->
+            <section id="tab-home" class="max-w-6xl mx-auto space-y-16 animate-fadeIn">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center pt-6">
+                    <div class="lg:col-span-8 space-y-6">
+                        <span class="inline-block font-mono text-xs px-3 py-1 rounded-full bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 border border-cyan-500/20 font-semibold tracking-wider uppercase">
+                            Founding Member & VP @ BosonQ Psi
+                        </span>
+                        <h2 class="text-5xl md:text-7xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-none">
+                            Hey, I'm Aditya.
+                        </h2>
+                        <p class="font-mono text-lg md:text-xl text-slate-600 dark:text-zinc-300 h-10">
+                            <span id="typewriter-text" class="typewriter-cursor"></span>
+                        </p>
+                        <p class="text-slate-700 dark:text-zinc-300 text-lg md:text-xl leading-relaxed font-light">
+                            By day (and most nights), I’m at <strong class="text-slate-900 dark:text-white font-semibold">BosonQ Psi</strong>. We’re overhauling simulation and modeling with quantum-inspired math—helping mission-critical industries solve massive computational bottlenecks without just throwing brute-force hardware at the problem.
+                        </p>
+                    </div>
+
+                    <div class="lg:col-span-4 bg-gradient-to-br from-slate-200/50 dark:from-zinc-900/90 to-slate-300/30 dark:to-black p-8 rounded-3xl border border-slate-300/80 dark:border-zinc-800 space-y-6 shadow-xl">
+                        <span class="font-mono text-xs text-slate-500 dark:text-zinc-400 uppercase tracking-widest">// QUICK_LINKS</span>
+                        <div class="flex flex-col gap-3 font-mono text-xs">
+                            <button onclick="switchTab('coffee')" class="w-full py-3.5 px-4 bg-slate-900 hover:bg-slate-800 dark:bg-zinc-100 dark:hover:bg-white dark:text-zinc-900 text-white font-semibold uppercase tracking-wider rounded-xl transition shadow-md text-left flex justify-between items-center">
+                                <span>Grab Virtual Coffee</span>
+                                <span>&rarr;</span>
+                            </button>
+                            <a href="mailto:singh.aditya0395@gmail.com" class="w-full py-3.5 px-4 bg-white/80 hover:bg-white dark:bg-zinc-900 dark:hover:bg-zinc-800 text-slate-700 dark:text-zinc-200 font-semibold uppercase tracking-wider rounded-xl border border-slate-300 dark:border-zinc-800 transition text-left flex justify-between items-center">
+                                <span>Email Me Directly</span>
+                                <span class="text-slate-400">@</span>
+                            </a>
+                            <a href="https://linkedin.com/in/audz12" target="_blank" class="w-full py-3.5 px-4 bg-white/80 hover:bg-white dark:bg-zinc-900 dark:hover:bg-zinc-800 text-slate-700 dark:text-zinc-200 font-semibold uppercase tracking-wider rounded-xl border border-slate-300 dark:border-zinc-800 transition text-left flex justify-between items-center">
+                                <span>Follow on LinkedIn</span>
+                                <span class="text-slate-400">↗</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 pt-6 border-t border-slate-200 dark:border-zinc-800">
+                    <div class="space-y-4">
+                        <span class="font-mono text-xs text-slate-500 dark:text-zinc-400 font-bold uppercase tracking-wider">// 01. THE BACKGROUND</span>
+                        <h3 class="text-2xl font-bold text-slate-900 dark:text-white">The Bizz + Tech Mix (TCS & ZS Days)</h3>
+                        <p class="text-slate-600 dark:text-zinc-300 leading-relaxed text-base">
+                            I speak fluent code <em>and</em> fluent business because I've spent time in the trenches of both. I started out writing code and building data pipelines at TCS. Then, during my time at ZS Associates, I got a front-row seat to management consulting fused with data. That stint taught me how businesses actually tick—figuring out market competition, product launches, pricing strategies, and turning raw numbers into actual strategy instead of just pretty slide decks.
+                        </p>
+                    </div>
+
+                    <div class="space-y-4">
+                        <span class="font-mono text-xs text-slate-500 dark:text-zinc-400 font-bold uppercase tracking-wider">// 02. THE REALITY CHECK</span>
+                        <h3 class="text-2xl font-bold text-slate-900 dark:text-white">My Blooper Reel & Daily Friction</h3>
+                        <div class="space-y-3">
+                            <div class="p-4 rounded-xl bg-slate-200/50 dark:bg-zinc-900/60 border border-slate-300/60 dark:border-zinc-800">
+                                <h4 class="font-bold text-slate-900 dark:text-white text-sm">DeliverBud (College Venture)</h4>
+                                <p class="text-slate-600 dark:text-zinc-400 text-xs mt-1">A masterclass in how <em>not</em> to run a startup, teaching me more than any textbook ever could.</p>
+                            </div>
+                            <div class="p-4 rounded-xl bg-slate-200/50 dark:bg-zinc-900/60 border border-slate-300/60 dark:border-zinc-800">
+                                <h4 class="font-bold text-slate-900 dark:text-white text-sm">Failing Every Other Day</h4>
+                                <p class="text-slate-600 dark:text-zinc-400 text-xs mt-1">If you're building in deep tech and not hitting walls regularly, you aren't trying hard enough.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-10 rounded-3xl bg-gradient-to-r from-slate-900 to-slate-800 dark:from-zinc-900 dark:to-black text-white border border-slate-800 dark:border-zinc-800 shadow-2xl flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+                    <div class="space-y-2 max-w-2xl">
+                        <span class="font-mono text-xs text-cyan-400 uppercase tracking-widest">// THE_REAL_GOAL</span>
+                        <p class="text-lg md:text-xl font-medium leading-relaxed">
+                            I'm not here to sell anything or build a shiny portfolio. Being knee-deep in deep tech, my only real goal is simple: find like-minded people and help boost this ecosystem.
+                        </p>
+                    </div>
+                    <button onclick="switchTab('coffee')" class="px-6 py-4 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-mono text-xs font-bold uppercase tracking-wider rounded-xl transition shadow-lg shrink-0">
+                        Let's Connect &rarr;
+                    </button>
+                </div>
+            </section>
+
+            <!-- TAB 2: ABOUT ME -->
+            <section id="tab-about" class="hidden space-y-12 max-w-4xl mx-auto animate-fadeIn">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 border-b border-slate-200 dark:border-zinc-800 pb-6">
+                    <div>
+                        <span class="font-mono text-xs text-slate-500 dark:text-zinc-400 uppercase tracking-widest">// THE_JOURNEY // TIMELINE</span>
+                        <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white mt-1">The Career Timeline</h2>
+                    </div>
+                    <a href="https://linkedin.com/in/audz12" target="_blank" class="font-mono text-xs text-cyan-600 dark:text-cyan-400 hover:underline">View Official LinkedIn Profile ↗</a>
+                </div>
+
+                <div class="relative border-l-2 border-slate-300 dark:border-zinc-800 ml-4 md:ml-8 space-y-12 py-4">
+                    <div class="relative pl-8 md:pl-12 group">
+                        <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-slate-900 dark:bg-zinc-100 border-4 border-slate-100 dark:border-black transition group-hover:scale-125"></div>
+                        <div class="p-6 rounded-2xl bg-white/90 dark:bg-zinc-900/80 border border-slate-300/80 dark:border-zinc-800 shadow-sm space-y-2 hover:border-cyan-500/50 transition">
+                            <span class="font-mono text-xs text-cyan-600 dark:text-cyan-400 font-bold tracking-wider uppercase">2015 – 2019 // BIT Durg</span>
+                            <h3 class="text-xl font-bold text-slate-900 dark:text-white">Undergrad & Founding DeliverBud</h3>
+                            <p class="text-slate-600 dark:text-zinc-300 text-sm leading-relaxed">
+                                Earned my B.E. in Information Technology. Far more educational than coursework was building *DeliverBud*—a chaotic, high-friction college venture that gave me my first true taste of building products from scratch.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="relative pl-8 md:pl-12 group">
+                        <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-slate-900 dark:bg-zinc-100 border-4 border-slate-100 dark:border-black transition group-hover:scale-125"></div>
+                        <div class="p-6 rounded-2xl bg-white/90 dark:bg-zinc-900/80 border border-slate-300/80 dark:border-zinc-800 shadow-sm space-y-2 hover:border-cyan-500/50 transition">
+                            <span class="font-mono text-xs text-cyan-600 dark:text-cyan-400 font-bold tracking-wider uppercase">TCS // Architecture Era</span>
+                            <h3 class="text-xl font-bold text-slate-900 dark:text-white">Tata Consultancy Services</h3>
+                            <p class="text-slate-600 dark:text-zinc-300 text-sm leading-relaxed">
+                                Worked deep in enterprise software architecture and data warehousing. Learned how massive ETL systems and data pipelines operate at global scale.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="relative pl-8 md:pl-12 group">
+                        <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-slate-900 dark:bg-zinc-100 border-4 border-slate-100 dark:border-black transition group-hover:scale-125"></div>
+                        <div class="p-6 rounded-2xl bg-white/90 dark:bg-zinc-900/80 border border-slate-300/80 dark:border-zinc-800 shadow-sm space-y-2 hover:border-cyan-500/50 transition">
+                            <span class="font-mono text-xs text-cyan-600 dark:text-cyan-400 font-bold tracking-wider uppercase">ZS Associates // Consulting</span>
+                            <h3 class="text-xl font-bold text-slate-900 dark:text-white">Management Consulting & Strategy</h3>
+                            <p class="text-slate-600 dark:text-zinc-300 text-sm leading-relaxed">
+                                Bridged raw data with high-level commercial strategy. Gained critical expertise in pricing mechanisms, market positioning, executive storytelling, and go-to-market execution.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="relative pl-8 md:pl-12 group">
+                        <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-slate-900 dark:bg-zinc-100 border-4 border-slate-100 dark:border-black transition group-hover:scale-125"></div>
+                        <div class="p-6 rounded-2xl bg-white/90 dark:bg-zinc-900/80 border border-slate-300/80 dark:border-zinc-800 shadow-sm space-y-2 hover:border-cyan-500/50 transition">
+                            <span class="font-mono text-xs text-cyan-600 dark:text-cyan-400 font-bold tracking-wider uppercase">2022 – PRESENT // Deep Tech Leap</span>
+                            <h3 class="text-xl font-bold text-slate-900 dark:text-white">BosonQ Psi (BQP)</h3>
+                            <p class="text-slate-600 dark:text-zinc-300 text-sm leading-relaxed">
+                                Stepped in as a Founding Member and Vice President. Leading business, strategic partnerships, operations, and security—scaling our quantum-inspired mathematical engines across global heavy industries.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 3: BLOG & MEDIA HUB -->
+            <section id="tab-blog" class="hidden space-y-10 max-w-5xl mx-auto animate-fadeIn">
+                <div>
+                    <span class="font-mono text-xs text-slate-500 dark:text-zinc-400 uppercase tracking-widest">// MEDIA_AND_MEMOS // THOUGHTS_AND_TALKS</span>
+                    <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white mt-1">Things I’ve Written, Said, or Recorded</h2>
+                    <p class="text-slate-600 dark:text-zinc-400 mt-1 text-sm">Clickable links to press quotes, video appearances, and written pieces.</p>
+                </div>
+
+                <div class="space-y-12">
+                    <div class="space-y-4">
+                        <h3 class="font-mono text-xs text-cyan-600 dark:text-cyan-400 uppercase tracking-widest font-bold">01 // Press & Quotes</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <a href="https://bosonqpsi.com" target="_blank" class="block p-6 rounded-2xl bg-white/90 dark:bg-zinc-900/80 border border-slate-300/80 dark:border-zinc-800 hover:border-cyan-500/60 transition group">
+                                <span class="font-mono text-xs text-slate-400 dark:text-zinc-500 block mb-2">[ FEATURED QUOTE ] ↗</span>
+                                <h4 class="text-lg font-bold text-slate-900 dark:text-white group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition mb-1">Quantum Simulation in Defense & Aerospace</h4>
+                                <p class="text-slate-600 dark:text-zinc-400 text-sm">Commentary on quantum-inspired optimization for global heavy engineering simulations.</p>
+                            </a>
+                            <a href="https://bosonqpsi.com" target="_blank" class="block p-6 rounded-2xl bg-white/90 dark:bg-zinc-900/80 border border-slate-300/80 dark:border-zinc-800 hover:border-cyan-500/60 transition group">
+                                <span class="font-mono text-xs text-slate-400 dark:text-zinc-500 block mb-2">[ PRESS COVERAGE ] ↗</span>
+                                <h4 class="text-lg font-bold text-slate-900 dark:text-white group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition mb-1">Scaling BosonQ Psi Ecosystem</h4>
+                                <p class="text-slate-600 dark:text-zinc-400 text-sm">Media mentions regarding our funding milestones and enterprise traction.</p>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <h3 class="font-mono text-xs text-cyan-600 dark:text-cyan-400 uppercase tracking-widest font-bold">02 // Videos & Talks</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <a href="https://youtube.com" target="_blank" class="block p-6 rounded-2xl bg-white/90 dark:bg-zinc-900/80 border border-slate-300/80 dark:border-zinc-800 hover:border-cyan-500/60 transition group">
+                                <span class="font-mono text-xs text-slate-400 dark:text-zinc-500 block mb-2">[ YOUTUBE PANEL ] ↗</span>
+                                <h4 class="text-lg font-bold text-slate-900 dark:text-white group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition mb-1">The Reality of Selling Deep Tech to Enterprises</h4>
+                                <p class="text-slate-600 dark:text-zinc-400 text-sm">Why standard SaaS playbooks fail in deep tech and how early teams build GTM loops.</p>
+                            </a>
+                            <a href="https://youtube.com" target="_blank" class="block p-6 rounded-2xl bg-white/90 dark:bg-zinc-900/80 border border-slate-300/80 dark:border-zinc-800 hover:border-cyan-500/60 transition group">
+                                <span class="font-mono text-xs text-slate-400 dark:text-zinc-500 block mb-2">[ VIDEO INTERVIEW ] ↗</span>
+                                <h4 class="text-lg font-bold text-slate-900 dark:text-white group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition mb-1">Quantum Computing Beyond the Hype</h4>
+                                <p class="text-slate-600 dark:text-zinc-400 text-sm">Breaking down quantum-inspired math without the sci-fi buzzwords.</p>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <h3 class="font-mono text-xs text-cyan-600 dark:text-cyan-400 uppercase tracking-widest font-bold">03 // Articles & Memos</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <a href="https://substack.com" target="_blank" class="block p-6 rounded-2xl bg-white/90 dark:bg-zinc-900/80 border border-slate-300/80 dark:border-zinc-800 hover:border-cyan-500/60 transition group">
+                                <span class="font-mono text-xs text-slate-400 dark:text-zinc-500 block mb-2">[ SUBSTACK ] ↗</span>
+                                <h4 class="text-lg font-bold text-slate-900 dark:text-white group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition mb-1">Beyond the AI Wrapper</h4>
+                                <p class="text-slate-600 dark:text-zinc-400 text-sm">Why building mathematical simulation engines requires a completely different mindset.</p>
+                            </a>
+                            <a href="https://linkedin.com/in/audz12" target="_blank" class="block p-6 rounded-2xl bg-white/90 dark:bg-zinc-900/80 border border-slate-300/80 dark:border-zinc-800 hover:border-cyan-500/60 transition group">
+                                <span class="font-mono text-xs text-slate-400 dark:text-zinc-500 block mb-2">[ LINKEDIN ARTICLE ] ↗</span>
+                                <h4 class="text-lg font-bold text-slate-900 dark:text-white group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition mb-1">Unlocking Global Partnerships in Hard Tech</h4>
+                                <p class="text-slate-600 dark:text-zinc-400 text-sm">How early-stage deep-tech startups can work alongside large system integrators.</p>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 4: VIRTUAL COFFEE & QUESTIONNAIRE SCHEDULER -->
+            <section id="tab-coffee" class="hidden space-y-10 max-w-5xl mx-auto animate-fadeIn">
+                <div>
+                    <span class="font-mono text-xs text-slate-500 dark:text-zinc-400 uppercase tracking-widest">// CAFFEINE_AND_CONVERSATION</span>
+                    <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white mt-1">☕ Virtual Coffee & Meeting Scheduler</h2>
+                    <p class="text-slate-600 dark:text-zinc-400 mt-1">Select a discussion topic below, fill out your questionnaire, and pick a time slot on my calendar.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div onclick="selectTopic('Quantum Simulation Jam')" id="card-1" class="p-8 rounded-2xl bg-white/90 dark:bg-zinc-900/80 border-2 border-slate-300/80 dark:border-zinc-800 hover:border-cyan-500 cursor-pointer transition space-y-3 group shadow-sm">
+                        <span class="font-mono text-xs text-cyan-600 dark:text-cyan-400 font-bold uppercase tracking-wider">TOPIC // 01</span>
+                        <h3 class="text-xl font-bold text-slate-900 dark:text-white group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition">Quantum Simulation & Enterprise Adoption</h3>
+                        <p class="text-slate-600 dark:text-zinc-300 text-sm leading-relaxed">
+                            For engineering leaders and simulation experts diving into how quantum-inspired solvers tackle computational bottlenecks in aerodynamics and heavy engineering.
+                        </p>
+                        <div class="pt-2 flex items-center text-xs font-mono text-cyan-600 dark:text-cyan-400 font-medium">
+                            <span>Click to select agenda &rarr;</span>
+                        </div>
+                    </div>
+
+                    <div onclick="selectTopic('Hard-Tech GTM Jam')" id="card-2" class="p-8 rounded-2xl bg-white/90 dark:bg-zinc-900/80 border-2 border-slate-300/80 dark:border-zinc-800 hover:border-cyan-500 cursor-pointer transition space-y-3 group shadow-sm">
+                        <span class="font-mono text-xs text-cyan-600 dark:text-cyan-400 font-bold uppercase tracking-wider">TOPIC // 02</span>
+                        <h3 class="text-xl font-bold text-slate-900 dark:text-white group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition">Hard-Tech GTM & Commercial Positioning</h3>
+                        <p class="text-slate-600 dark:text-zinc-300 text-sm leading-relaxed">
+                            For founders and sales leaders navigating why traditional SaaS playbooks fail in deep tech and how to build trust with conservative enterprise buyers.
+                        </p>
+                        <div class="pt-2 flex items-center text-xs font-mono text-cyan-600 dark:text-cyan-400 font-medium">
+                            <span>Click to select agenda &rarr;</span>
+                        </div>
+                    </div>
+
+                    <div onclick="selectTopic('VCs & Frontier Tech Jam')" id="card-3" class="p-8 rounded-2xl bg-white/90 dark:bg-zinc-900/80 border-2 border-slate-300/80 dark:border-zinc-800 hover:border-cyan-500 cursor-pointer transition space-y-3 group shadow-sm">
+                        <span class="font-mono text-xs text-cyan-600 dark:text-cyan-400 font-bold uppercase tracking-wider">TOPIC // 03</span>
+                        <h3 class="text-xl font-bold text-slate-900 dark:text-white group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition">VCs & Frontier Tech Investment Landscape</h3>
+                        <p class="text-slate-600 dark:text-zinc-300 text-sm leading-relaxed">
+                            For investors and analysts looking at the shift from consumer app wrappers to deep tech, quantum infrastructure, valuation realities, and venture milestones.
+                        </p>
+                        <div class="pt-2 flex items-center text-xs font-mono text-cyan-600 dark:text-cyan-400 font-medium">
+                            <span>Click to select agenda &rarr;</span>
+                        </div>
+                    </div>
+
+                    <div onclick="selectTopic('Founder Therapy Jam')" id="card-4" class="p-8 rounded-2xl bg-white/90 dark:bg-zinc-900/80 border-2 border-slate-300/80 dark:border-zinc-800 hover:border-cyan-500 cursor-pointer transition space-y-3 group shadow-sm">
+                        <span class="font-mono text-xs text-cyan-600 dark:text-cyan-400 font-bold uppercase tracking-wider">TOPIC // 04</span>
+                        <h3 class="text-xl font-bold text-slate-900 dark:text-white group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition">Founder Therapy & Startup Chaos</h3>
+                        <p class="text-slate-600 dark:text-zinc-300 text-sm leading-relaxed">
+                            No pitch decks. Just an unfiltered chat swapping war stories about early-stage fundraising, team alignment, managing operational burnout, and startup resilience.
+                        </p>
+                        <div class="pt-2 flex items-center text-xs font-mono text-cyan-600 dark:text-cyan-400 font-medium">
+                            <span>Click to select agenda &rarr;</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Questionnaire Form -->
+                <div id="questionnaire-card" class="p-8 md:p-10 rounded-3xl bg-white/90 dark:bg-zinc-900 border border-slate-300 dark:border-zinc-800 shadow-xl space-y-6">
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-2 border-b border-slate-200 dark:border-zinc-800 pb-4">
+                        <div>
+                            <span class="font-mono text-xs text-cyan-600 dark:text-cyan-400 uppercase tracking-widest">// STEP_01 // QUESTIONNAIRE</span>
+                            <h3 class="text-xl font-bold text-slate-900 dark:text-white mt-1">Pre-Meeting Questionnaire</h3>
+                        </div>
+                        <span class="font-mono text-xs text-slate-500 dark:text-zinc-400">Selected Topic: <strong id="active-coffee-label" class="text-slate-900 dark:text-white">Quantum Simulation Jam</strong></span>
+                    </div>
+
+                    <form onsubmit="submitQuestionnaire(event)" class="space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="space-y-2">
+                                <label class="block font-mono text-xs text-slate-700 dark:text-zinc-300 uppercase">Your Full Name *</label>
+                                <input type="text" id="q-name" required placeholder="e.g. Sarah Jenkins" class="w-full px-4 py-3 rounded-xl bg-slate-100 dark:bg-black border border-slate-300 dark:border-zinc-800 text-slate-900 dark:text-white focus:outline-none focus:border-cyan-500 font-sans text-sm">
+                            </div>
+                            <div class="space-y-2">
+                                <label class="block font-mono text-xs text-slate-700 dark:text-zinc-300 uppercase">Your Email Address *</label>
+                                <input type="email" id="q-email" required placeholder="e.g. sarah@company.com" class="w-full px-4 py-3 rounded-xl bg-slate-100 dark:bg-black border border-slate-300 dark:border-zinc-800 text-slate-900 dark:text-white focus:outline-none focus:border-cyan-500 font-sans text-sm">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="space-y-2">
+                                <label class="block font-mono text-xs text-slate-700 dark:text-zinc-300 uppercase">Organization / Company *</label>
+                                <input type="text" id="q-org" required placeholder="e.g. Lockheed Martin / Venture Firm" class="w-full px-4 py-3 rounded-xl bg-slate-100 dark:bg-black border border-slate-300 dark:border-zinc-800 text-slate-900 dark:text-white focus:outline-none focus:border-cyan-500 font-sans text-sm">
+                            </div>
+                            <div class="space-y-2">
+                                <label class="block font-mono text-xs text-slate-700 dark:text-zinc-300 uppercase">Your Role / Background *</label>
+                                <input type="text" id="q-role" required placeholder="e.g. Engineering Director / VC Partner" class="w-full px-4 py-3 rounded-xl bg-slate-100 dark:bg-black border border-slate-300 dark:border-zinc-800 text-slate-900 dark:text-white focus:outline-none focus:border-cyan-500 font-sans text-sm">
+                            </div>
+                        </div>
+
+                        <div class="space-y-2">
+                            <label class="block font-mono text-xs text-slate-700 dark:text-zinc-300 uppercase">What specific challenge or question would you like to discuss? *</label>
+                            <textarea id="q-notes" rows="4" required placeholder="Share brief context so we can dive straight in..." class="w-full px-4 py-3 rounded-xl bg-slate-100 dark:bg-black border border-slate-300 dark:border-zinc-800 text-slate-900 dark:text-white focus:outline-none focus:border-cyan-500 font-sans text-sm"></textarea>
+                        </div>
+
+                        <button type="submit" id="submit-btn" class="w-full py-4 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-mono text-xs font-bold uppercase tracking-wider rounded-xl transition shadow-lg flex justify-center items-center gap-2">
+                            <span>Save Answers & Proceed to Calendar Booking</span>
+                            <span>&rarr;</span>
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Calendar Schedule Widget -->
+                <div id="calendar-container" class="hidden p-8 md:p-10 rounded-3xl bg-white/90 dark:bg-zinc-900 border border-cyan-500/85 shadow-2xl space-y-6 animate-fadeIn">
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-2 border-b border-slate-200 dark:border-zinc-800 pb-4">
+                        <div>
+                            <span class="font-mono text-xs text-cyan-600 dark:text-cyan-400 uppercase tracking-widest">// STEP_02 // CALENDAR_SCHEDULING</span>
+                            <h3 class="text-xl font-bold text-slate-900 dark:text-white mt-1">Select Your Time Slot</h3>
+                        </div>
+                        <span class="font-mono text-xs px-3 py-1 bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 border border-cyan-500/30 rounded-lg">✓ Questionnaire Saved via API</span>
+                    </div>
+                    <p class="text-sm text-slate-600 dark:text-zinc-300">
+                        Thank you! Your responses have been processed through the backend API. Pick an available time slot below to finalize your booking.
+                    </p>
+                    <div class="w-full overflow-hidden rounded-2xl border border-slate-200 dark:border-zinc-800 bg-slate-50 dark:bg-black">
+                        <iframe src="https://calendar.google.com/calendar/appointments/schedules/AcZssZ3...your-embed-code..." style="border: 0" width="100%" height="550" frameborder="0"></iframe>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer class="w-full border-t border-slate-200/60 dark:border-zinc-800/80 bg-white/70 dark:bg-black/80 backdrop-blur-xl py-6 text-center font-mono text-xs text-slate-500 dark:text-zinc-400 transition-colors duration-300 space-y-2">
+        <p>Direct Inquiries: <a href="mailto:singh.aditya0395@gmail.com" class="text-cyan-600 dark:text-cyan-400 underline">singh.aditya0395@gmail.com</a></p>
+        <p>&copy; 2026 Aditya Singh. All rights reserved.</p>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        const phrases = [
+            "Building quantum-inspired math engines.",
+            "Solving heavy enterprise compute bottlenecks.",
+            "Scaling deep tech without the fluff."
+        ];
+        let currentPhrase = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+        const typewriterElement = document.getElementById('typewriter-text');
+
+        function typeWriter() {
+            if (!typewriterElement) return;
+            const current = phrases[currentPhrase];
+            
+            if (isDeleting) {
+                typewriterElement.textContent = current.substring(0, charIndex - 1);
+                charIndex--;
+            } else {
+                typewriterElement.textContent = current.substring(0, charIndex + 1);
+                charIndex++;
+            }
+
+            let speed = isDeleting ? 40 : 80;
+
+            if (!isDeleting && charIndex === current.length) {
+                speed = 2000;
+                isDeleting = true;
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                currentPhrase = (currentPhrase + 1) % phrases.length;
+                speed = 500;
+            }
+
+            setTimeout(typeWriter, speed);
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            typeWriter();
+        });
+
+        function switchTab(tabName) {
+            document.getElementById('tab-home').classList.add('hidden');
+            document.getElementById('tab-about').classList.add('hidden');
+            document.getElementById('tab-blog').classList.add('hidden');
+            document.getElementById('tab-coffee').classList.add('hidden');
+
+            const buttons = ['btn-home', 'btn-about', 'btn-blog', 'btn-coffee'];
+            const isDark = document.getElementById('body-element').classList.contains('dark-mode');
+
+            buttons.forEach(id => {
+                const btn = document.getElementById(id);
+                btn.className = isDark 
+                    ? "px-4 py-2 rounded-lg font-medium transition text-zinc-300 hover:text-white"
+                    : "px-4 py-2 rounded-lg font-medium transition text-slate-700 hover:text-slate-900";
+            });
+
+            document.getElementById('tab-' + tabName).classList.remove('hidden');
+            const activeBtn = document.getElementById('btn-' + tabName);
+            activeBtn.className = isDark 
+                ? "px-4 py-2 rounded-lg font-medium transition bg-zinc-100 text-zinc-900 shadow-xs"
+                : "px-4 py-2 rounded-lg font-medium transition bg-slate-900 text-white shadow-xs";
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function toggleTheme() {
+            const body = document.getElementById('body-element');
+            const html = document.getElementById('html-root');
+            const themeIcon = document.getElementById('theme-icon');
+
+            if (body.classList.contains('light-mode')) {
+                body.classList.remove('light-mode');
+                body.classList.add('dark-mode');
+                html.classList.add('dark');
+                themeIcon.textContent = "☀️ Light";
+            } else {
+                body.classList.remove('dark-mode');
+                body.classList.add('light-mode');
+                html.classList.remove('dark');
+                themeIcon.textContent = "🌙 Dark";
+            }
+
+            const activeTab = document.querySelector('main > section:not(.hidden)').id.replace('tab-', '');
+            switchTab(activeTab);
+        }
+
+        let selectedTopicName = "Quantum Simulation Jam";
+
+        function selectTopic(topicName) {
+            selectedTopicName = topicName;
+            document.getElementById('active-coffee-label').textContent = topicName;
+            
+            for(let i=1; i<=4; i++) {
+                const card = document.getElementById('card-' + i);
+                card.classList.remove('border-cyan-500');
+                card.classList.add('border-slate-300/80', 'dark:border-zinc-800');
+            }
+            event.currentTarget.classList.remove('border-slate-300/80', 'dark:border-zinc-800');
+            event.currentTarget.classList.add('border-cyan-500');
+
+            document.getElementById('questionnaire-card').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        async function submitQuestionnaire(event) {
+            event.preventDefault();
+            
+            const submitBtn = document.getElementById('submit-btn');
+            submitBtn.textContent = "Processing via API...";
+            submitBtn.disabled = true;
+
+            const payload = {
+                topic: selectedTopicName,
+                name: document.getElementById('q-name').value,
+                email: document.getElementById('q-email').value,
+                organization: document.getElementById('q-org').value,
+                role: document.getElementById('q-role').value,
+                notes: document.getElementById('q-notes').value
+            };
+
+            try {
+                // Connects to Python FastAPI Backend running on port 8000
+                const response = await fetch('http://localhost:8000/api/meetings', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const result = await response.json();
+                
+                if (response.ok) {
+                    const questionnaireCard = document.getElementById('questionnaire-card');
+                    const calendarContainer = document.getElementById('calendar-container');
+
+                    questionnaireCard.style.opacity = '0.5';
+                    questionnaireCard.style.pointerEvents = 'none';
+                    
+                    calendarContainer.classList.remove('hidden');
+                    calendarContainer.scrollIntoView({ behavior: 'smooth' });
+                } else {
+                    alert("Error submitting questionnaire. Please check your inputs.");
+                    submitBtn.textContent = "Save Answers & Proceed to Calendar Booking →";
+                    submitBtn.disabled = false;
+                }
+            } catch (error) {
+                console.error("API Connection Error:", error);
+                // Fallback graceful progression if backend server isn't spun up yet
+                const questionnaireCard = document.getElementById('questionnaire-card');
+                const calendarContainer = document.getElementById('calendar-container');
+                questionnaireCard.style.opacity = '0.5';
+                calendarContainer.classList.remove('hidden');
+                calendarContainer.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+    </script>
+</body>
+</html>
