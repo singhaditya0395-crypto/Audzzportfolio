@@ -1,17 +1,40 @@
-from fastapi import FastAPI, HTTPException
+import json
+import os
+import smtplib
+from datetime import datetime, timezone
+from email.mime.text import MIMEText
+from pathlib import Path
+
+from dotenv import load_dotenv
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, EmailStr
 import uvicorn
+
+load_dotenv()
+
+GMAIL_ADDRESS = os.getenv("GMAIL_ADDRESS")
+GMAIL_APP_PASSWORD = os.getenv("GMAIL_APP_PASSWORD")
+NOTIFY_EMAIL = os.getenv("NOTIFY_EMAIL", "singh.aditya0395@gmail.com")
+
+LOG_FILE_PATH = Path(os.getenv("LOG_FILE_PATH", Path(__file__).parent / "data" / "meetings_log.jsonl"))
+
+FRONTEND_ORIGINS = [
+    origin.strip()
+    for origin in os.getenv("FRONTEND_ORIGINS", "http://localhost:3000,http://127.0.0.1:3000").split(",")
+    if origin.strip()
+]
 
 app = FastAPI(title="Aditya Singh Portfolio API", version="1.0.0")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-);
+    allow_origins=FRONTEND_ORIGINS,
+    allow_credentials=False,
+    allow_methods=["POST", "GET"],
+    allow_headers=["Content-Type"],
+)
+
 
 class MeetingRequest(BaseModel):
     topic: str
@@ -21,19 +44,67 @@ class MeetingRequest(BaseModel):
     role: str
     notes: str
 
+
+def log_meeting_to_file(data: MeetingRequest) -> None:
+    record = {"received_at": datetime.now(timezone.utc).isoformat(), **data.model_dump()}
+    LOG_FILE_PATH.parent.mkdir(parents=True, exist_ok=True)
+    with open(LOG_FILE_PATH, "a") as log_file:
+        log_file.write(json.dumps(record) + "\n")
+
+
+def send_meeting_email(data: MeetingRequest) -> None:
+    if not GMAIL_ADDRESS or not GMAIL_APP_PASSWORD:
+        print("[Email] Skipped: GMAIL_ADDRESS / GMAIL_APP_PASSWORD not set in .env")
+        return
+
+    body = (
+        f"New virtual coffee request via portfolio site\n\n"
+        f"Topic: {data.topic}\n"
+        f"Name: {data.name}\n"
+        f"Email: {data.email}\n"
+        f"Organization: {data.organization}\n"
+        f"Role: {data.role}\n\n"
+        f"Notes:\n{data.notes}\n"
+    )
+    message = MIMEText(body)
+    message["Subject"] = f"[Portfolio] New meeting request: {data.topic}"
+    message["From"] = GMAIL_ADDRESS
+    message["To"] = NOTIFY_EMAIL
+    message["Reply-To"] = data.email
+
+    with smtplib.SMTP("smtp.gmail.com", 587) as server:
+        server.starttls()
+        server.login(GMAIL_ADDRESS, GMAIL_APP_PASSWORD)
+        server.sendmail(GMAIL_ADDRESS, [NOTIFY_EMAIL], message.as_string())
+
+
 @app.get("/api/health")
 def health_check():
     return {"status": "healthy", "service": "python-backend-engine"}
 
+
 @app.post("/api/meetings")
 def create_meeting(data: MeetingRequest):
-    # Process or store questionnaire data securely
     print(f"[API] Meeting questionnaire received from {data.name} ({data.organization}) for topic: {data.topic}")
+
+    try:
+        log_meeting_to_file(data)
+    except Exception as exc:
+        print(f"[Log] Failed to write local backup log: {exc}")
+
+    try:
+        send_meeting_email(data)
+    except Exception as exc:
+        # Don't block the visitor's booking flow on an email misconfiguration;
+        # just surface it loudly server-side so it gets fixed.
+        print(f"[Email] Failed to send notification: {exc}")
+
     return {
         "success": True,
         "message": "Questionnaire saved successfully. Proceeding to calendar schedule.",
-        - "submitted_data": data.dict()
+        "submitted_data": data.model_dump(),
     }
+
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)

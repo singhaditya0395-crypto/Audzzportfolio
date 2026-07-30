@@ -1,0 +1,17 @@
+# Node
+node_modules/
+npm-debug.log*
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Secrets
+.env
+
+# Local submission backups (contain visitor PII)
+Audz portfolio/Backend/data/
+
+# OS
+.DS_Store
