@@ -397,11 +397,13 @@
     <script>
         const MY_EMAIL = 'singh.aditya0395@gmail.com';
 
-        // Backend base URL. Defaults to localhost for local dev; if you deploy the
-        // FastAPI backend to its own domain, hardcode that URL here instead.
+        // Backend base URL. Local dev hits the FastAPI dev server on port 8000.
+        // In production (Vercel), the API is deployed as a same-origin serverless
+        // function under /api/* (see Public/api/index.py), so an empty base just
+        // calls /api/meetings on the current domain — no separate host needed.
         const API_BASE = (location.hostname === 'localhost' || location.hostname === '127.0.0.1')
             ? 'http://localhost:8000'
-            : `${location.protocol}//${location.hostname}:8000`;
+            : '';
 
         function buildCalendarLink(payload) {
             const params = new URLSearchParams({
@@ -535,11 +537,14 @@
             document.getElementById('calendar-link').href = buildCalendarLink(payload);
 
             try {
-                // Connects to Python FastAPI Backend (emails the submission to me)
+                // Connects to Python FastAPI Backend (emails the submission to me).
+                // Bounded with a timeout so a missing/unreachable backend fails fast
+                // instead of leaving the visitor stuck on "Processing via API..."
                 const response = await fetch(`${API_BASE}/api/meetings`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
+                    body: JSON.stringify(payload),
+                    signal: AbortSignal.timeout(6000)
                 });
 
                 const result = await response.json();
