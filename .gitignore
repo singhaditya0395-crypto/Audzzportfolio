@@ -15,3 +15,6 @@ Audz portfolio/Backend/data/
 
 # OS
 .DS_Store
+
+# graphify
+graphify-out/
