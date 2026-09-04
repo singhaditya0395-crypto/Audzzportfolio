@@ -12,6 +12,7 @@ __pycache__/
 
 # Local submission backups (contain visitor PII)
 Audz portfolio/Backend/data/
+Audz portfolio/Frontend/Public/api/data/
 
 # OS
 .DS_Store

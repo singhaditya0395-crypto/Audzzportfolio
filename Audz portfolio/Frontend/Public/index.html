@@ -178,6 +178,8 @@
 
     <div id="grain-overlay" aria-hidden="true"></div>
 
+    <div id="toast-container" class="fixed bottom-6 right-6 z-[70] flex flex-col gap-2 pointer-events-none" aria-live="polite" aria-atomic="true"></div>
+
     <div class="hero-atmosphere" aria-hidden="true">
         <div class="hero-glow"></div>
         <div class="hero-glow hero-glow-b"></div>
@@ -251,7 +253,7 @@
                                 <span>Grab Virtual Coffee</span>
                                 <span>&rarr;</span>
                             </button>
-                            <a href="mailto:singh.aditya0395@gmail.com" class="w-full py-3.5 px-4 bg-white/80 hover:bg-white active:scale-[0.98] dark:bg-zinc-900 dark:hover:bg-zinc-800 text-slate-700 dark:text-zinc-200 font-semibold uppercase tracking-wider rounded-xl border border-slate-300 dark:border-zinc-800 transition text-left flex justify-between items-center spotlight-card">
+                            <a href="#" data-email-b64="c2luZ2guYWRpdHlhMDM5NUBnbWFpbC5jb20=" class="w-full py-3.5 px-4 bg-white/80 hover:bg-white active:scale-[0.98] dark:bg-zinc-900 dark:hover:bg-zinc-800 text-slate-700 dark:text-zinc-200 font-semibold uppercase tracking-wider rounded-xl border border-slate-300 dark:border-zinc-800 transition text-left flex justify-between items-center spotlight-card">
                                 <span>Email Me Directly</span>
                                 <span class="text-slate-400">@</span>
                             </a>
@@ -438,6 +440,7 @@
                     <span class="font-mono text-xs text-slate-500 dark:text-zinc-400 uppercase tracking-widest">// CAFFEINE_AND_CONVERSATION</span>
                     <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white mt-1">☕ Virtual Coffee & Meeting Scheduler</h2>
                     <p class="text-slate-600 dark:text-zinc-400 mt-1">Select a discussion topic below, fill out your questionnaire, and pick a time slot on my calendar.</p>
+                    <p id="timezone-note" class="font-mono text-xs text-slate-500 dark:text-zinc-400 mt-2"></p>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -493,31 +496,49 @@
                     </div>
 
                     <form onsubmit="submitQuestionnaire(event)" class="space-y-6">
+                        <div class="absolute -left-[9999px] w-px h-px overflow-hidden" aria-hidden="true">
+                            <label for="q-website">Leave this field blank</label>
+                            <input type="text" id="q-website" name="website" tabindex="-1" autocomplete="off">
+                        </div>
+
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div class="space-y-2">
                                 <label class="block font-mono text-xs text-slate-700 dark:text-zinc-300 uppercase">Your Full Name *</label>
-                                <input type="text" id="q-name" required placeholder="e.g. Sarah Jenkins" class="w-full px-4 py-3 rounded-xl bg-slate-100 dark:bg-zinc-950 border border-slate-300 dark:border-zinc-800 text-slate-900 dark:text-white focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/40 font-sans text-sm">
+                                <input type="text" id="q-name" required maxlength="120" aria-describedby="q-name-error" placeholder="e.g. Sarah Jenkins" class="w-full px-4 py-3 rounded-xl bg-slate-100 dark:bg-zinc-950 border border-slate-300 dark:border-zinc-800 text-slate-900 dark:text-white focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/40 font-sans text-sm">
+                                <p id="q-name-error" class="hidden text-xs text-rose-600 dark:text-rose-400"></p>
                             </div>
                             <div class="space-y-2">
                                 <label class="block font-mono text-xs text-slate-700 dark:text-zinc-300 uppercase">Your Email Address *</label>
-                                <input type="email" id="q-email" required placeholder="e.g. sarah@company.com" class="w-full px-4 py-3 rounded-xl bg-slate-100 dark:bg-zinc-950 border border-slate-300 dark:border-zinc-800 text-slate-900 dark:text-white focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/40 font-sans text-sm">
+                                <input type="email" id="q-email" required maxlength="254" aria-describedby="q-email-error" placeholder="e.g. sarah@company.com" class="w-full px-4 py-3 rounded-xl bg-slate-100 dark:bg-zinc-950 border border-slate-300 dark:border-zinc-800 text-slate-900 dark:text-white focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/40 font-sans text-sm">
+                                <p id="q-email-error" class="hidden text-xs text-rose-600 dark:text-rose-400"></p>
                             </div>
                         </div>
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div class="space-y-2">
                                 <label class="block font-mono text-xs text-slate-700 dark:text-zinc-300 uppercase">Organization / Company *</label>
-                                <input type="text" id="q-org" required placeholder="e.g. Lockheed Martin / Venture Firm" class="w-full px-4 py-3 rounded-xl bg-slate-100 dark:bg-zinc-950 border border-slate-300 dark:border-zinc-800 text-slate-900 dark:text-white focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/40 font-sans text-sm">
+                                <input type="text" id="q-org" required maxlength="100" aria-describedby="q-org-error" placeholder="e.g. Lockheed Martin / Venture Firm" class="w-full px-4 py-3 rounded-xl bg-slate-100 dark:bg-zinc-950 border border-slate-300 dark:border-zinc-800 text-slate-900 dark:text-white focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/40 font-sans text-sm">
+                                <p id="q-org-error" class="hidden text-xs text-rose-600 dark:text-rose-400"></p>
                             </div>
                             <div class="space-y-2">
                                 <label class="block font-mono text-xs text-slate-700 dark:text-zinc-300 uppercase">Your Role / Background *</label>
-                                <input type="text" id="q-role" required placeholder="e.g. Engineering Director / VC Partner" class="w-full px-4 py-3 rounded-xl bg-slate-100 dark:bg-zinc-950 border border-slate-300 dark:border-zinc-800 text-slate-900 dark:text-white focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/40 font-sans text-sm">
+                                <input type="text" id="q-role" required maxlength="150" aria-describedby="q-role-error" placeholder="e.g. Engineering Director / VC Partner" class="w-full px-4 py-3 rounded-xl bg-slate-100 dark:bg-zinc-950 border border-slate-300 dark:border-zinc-800 text-slate-900 dark:text-white focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/40 font-sans text-sm">
+                                <p id="q-role-error" class="hidden text-xs text-rose-600 dark:text-rose-400"></p>
                             </div>
                         </div>
 
                         <div class="space-y-2">
                             <label class="block font-mono text-xs text-slate-700 dark:text-zinc-300 uppercase">What specific challenge or question would you like to discuss? *</label>
-                            <textarea id="q-notes" rows="4" required placeholder="Share brief context so we can dive straight in..." class="w-full px-4 py-3 rounded-xl bg-slate-100 dark:bg-zinc-950 border border-slate-300 dark:border-zinc-800 text-slate-900 dark:text-white focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/40 font-sans text-sm"></textarea>
+                            <textarea id="q-notes" rows="4" required maxlength="4000" aria-describedby="q-notes-error" placeholder="Share brief context so we can dive straight in..." class="w-full px-4 py-3 rounded-xl bg-slate-100 dark:bg-zinc-950 border border-slate-300 dark:border-zinc-800 text-slate-900 dark:text-white focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/40 font-sans text-sm"></textarea>
+                            <p id="q-notes-error" class="hidden text-xs text-rose-600 dark:text-rose-400"></p>
+                        </div>
+
+                        <div class="space-y-2">
+                            <label class="flex items-start gap-3 text-sm text-slate-700 dark:text-zinc-300 cursor-pointer">
+                                <input type="checkbox" id="q-consent" required aria-describedby="q-consent-error" class="mt-0.5 w-4 h-4 rounded border-slate-300 dark:border-zinc-700 text-cyan-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/40 bg-slate-100 dark:bg-zinc-950">
+                                <span>I agree to be contacted about this discussion topic. Your data is kept for 30 days, then deleted. See the <a href="#privacy-policy" class="glow-text underline text-cyan-600 dark:text-cyan-400">Privacy Policy</a> in the footer for details. *</span>
+                            </label>
+                            <p id="q-consent-error" class="hidden text-xs text-rose-600 dark:text-rose-400"></p>
                         </div>
 
                         <button type="submit" id="submit-btn" class="w-full py-4 bg-cyan-500 hover:bg-cyan-400 active:scale-[0.98] text-slate-950 font-mono text-xs font-bold uppercase tracking-wider rounded-xl transition shadow-lg flex justify-center items-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed disabled:active:scale-100">
@@ -546,6 +567,16 @@
                             <span>&rarr;</span>
                         </a>
                     </div>
+
+                    <div id="data-rights-panel" class="hidden pt-4 border-t border-slate-200 dark:border-zinc-800 space-y-2">
+                        <span class="font-mono text-xs text-slate-500 dark:text-zinc-400 uppercase tracking-widest">// YOUR_DATA</span>
+                        <p class="text-xs text-slate-600 dark:text-zinc-400 leading-relaxed">Kept for 30 days, then auto-deleted. This link is your only way to manage it yourself, save it now if you want that option.</p>
+                        <div class="flex flex-wrap gap-2 pt-1">
+                            <a id="data-view-link" href="#" target="_blank" rel="noopener" class="spotlight-card px-4 py-2 rounded-lg border border-slate-300 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-slate-700 dark:text-zinc-200 font-mono text-xs uppercase tracking-wider transition">View my data</a>
+                            <button type="button" id="data-delete-btn" class="spotlight-card px-4 py-2 rounded-lg border border-rose-300 dark:border-rose-900 bg-white dark:bg-zinc-900 text-rose-600 dark:text-rose-400 font-mono text-xs uppercase tracking-wider transition">Delete my data now</button>
+                        </div>
+                        <p id="data-delete-status" class="hidden text-xs font-mono"></p>
+                    </div>
                 </div>
             </section>
 
@@ -554,16 +585,18 @@
 
     <!-- Footer -->
     <footer class="w-full border-t border-slate-200/60 dark:border-zinc-800/80 bg-white/70 dark:bg-zinc-950/80 backdrop-blur-xl py-6 text-center font-mono text-xs text-slate-500 dark:text-zinc-400 transition-colors duration-300 space-y-2">
-        <p>Direct Inquiries: <a href="mailto:singh.aditya0395@gmail.com" class="glow-text text-cyan-600 dark:text-cyan-400 underline">singh.aditya0395@gmail.com</a></p>
+        <p>Direct Inquiries: <a href="#" data-email-b64="c2luZ2guYWRpdHlhMDM5NUBnbWFpbC5jb20=" class="glow-text text-cyan-600 dark:text-cyan-400 underline"></a></p>
         <p>&copy; 2026 Aditya Singh. All rights reserved.</p>
 
-        <details class="max-w-lg mx-auto pt-1 text-left group/policy">
+        <details id="privacy-policy" class="max-w-lg mx-auto pt-1 text-left group/policy">
             <summary class="glow-text cursor-pointer text-center list-none underline hover:text-cyan-600 dark:hover:text-cyan-400 transition">Privacy Policy</summary>
             <div class="pt-3 space-y-3 leading-relaxed normal-case font-sans text-slate-600 dark:text-zinc-400">
-                <p><strong class="text-slate-700 dark:text-zinc-300">What's collected.</strong> The only data this site gathers is what you type into the Virtual Coffee questionnaire: name, email, organization, role, discussion topic, and notes. There are no accounts, no cookies, and no analytics or ad trackers running here.</p>
-                <p><strong class="text-slate-700 dark:text-zinc-300">How it's used.</strong> Submitting the form emails your answers straight to Aditya's inbox so he can prepare for the conversation, plus a best-effort backup log kept on the server. It's used only for that purpose, never sold, rented, or shared with third parties, and never used for marketing.</p>
+                <p><strong class="text-slate-700 dark:text-zinc-300">What's collected.</strong> The only data this site gathers is what you type into the Virtual Coffee questionnaire: name, email, organization, role, discussion topic, and notes, plus your explicit consent to be contacted about it. There are no accounts, no cookies, and no analytics or ad trackers running here.</p>
+                <p><strong class="text-slate-700 dark:text-zinc-300">How it's used.</strong> Submitting the form emails your answers straight to Aditya's inbox so he can prepare for the conversation. It's used only for that purpose, never sold, rented, or shared with third parties, and never used for marketing.</p>
+                <p><strong class="text-slate-700 dark:text-zinc-300">Where it's stored.</strong> The email notification is the durable record (subject to your own email provider's retention). A best-effort backup copy is also kept briefly on the server's temporary storage, which can be cleared at any time. Separately, an encrypted copy of your submission (your email address specifically is encrypted at rest) is kept for up to 30 days to power the data-access and deletion requests below, then automatically and permanently deleted.</p>
+                <p><strong class="text-slate-700 dark:text-zinc-300">Access logging.</strong> Every time stored submission data is read or deleted, that access is itself logged (timestamp, action, and requester IP) for security auditing.</p>
                 <p><strong class="text-slate-700 dark:text-zinc-300">Outbound links.</strong> Links to LinkedIn, YouTube, Substack, and BosonQ Psi take you off this site to services with their own privacy policies.</p>
-                <p><strong class="text-slate-700 dark:text-zinc-300">Your data, your call.</strong> Email <a href="mailto:singh.aditya0395@gmail.com" class="text-cyan-600 dark:text-cyan-400 underline">singh.aditya0395@gmail.com</a> anytime to see, correct, or delete what you submitted.</p>
+                <p><strong class="text-slate-700 dark:text-zinc-300">Your data, your call.</strong> Right after you submit the questionnaire, you're shown a personal link that lets you view or permanently delete your stored submission yourself at any time within the 30 days, no need to ask. Lost that link? Email <a href="#" data-email-b64="c2luZ2guYWRpdHlhMDM5NUBnbWFpbC5jb20=" class="text-cyan-600 dark:text-cyan-400 underline"></a> and Aditya will do it for you.</p>
             </div>
         </details>
     </footer>
@@ -572,7 +605,6 @@
     <script type="module">
         import { animate, stagger } from "https://cdn.jsdelivr.net/npm/motion@13.1.1/+esm";
 
-        const MY_EMAIL = 'singh.aditya0395@gmail.com';
         const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
         // Backend base URL. Local dev hits the FastAPI dev server on port 8000.
@@ -583,12 +615,48 @@
             ? 'http://localhost:8000'
             : '';
 
+        // Fetched from the backend (NOTIFY_EMAIL env var) instead of being hardcoded
+        // here, so the address never sits in plaintext in the page source.
+        let contactEmail = null;
+        fetch(`${API_BASE}/api/contact`, { signal: AbortSignal.timeout(4000) })
+            .then(r => r.json())
+            .then(data => { contactEmail = data.email || null; })
+            .catch(() => { /* Calendar invite still works, just without a pre-filled host guest. */ });
+
+        // Timezone detection: native Intl API, no service/dependency needed. There's
+        // no chosen meeting time anywhere in this flow yet (that happens when the
+        // host opens the calendar link and picks a slot), so this can't "convert" a
+        // specific time - it surfaces both sides' zones as context for that step.
+        function getTimezoneInfo() {
+            try {
+                const zone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+                const offset = new Intl.DateTimeFormat('en-US', { timeZoneName: 'shortOffset' })
+                    .formatToParts(new Date())
+                    .find(part => part.type === 'timeZoneName');
+                const label = offset ? `${zone} (${offset.value})` : zone;
+                return { zone, label };
+            } catch (error) {
+                return { zone: '', label: '' };
+            }
+        }
+
+        function displayTimezoneNote() {
+            const el = document.getElementById('timezone-note');
+            if (!el) return;
+            const { label } = getTimezoneInfo();
+            el.textContent = label
+                ? `Your timezone: ${label}. Aditya is based in Bengaluru (IST, GMT+5:30).`
+                : '';
+        }
+
         function buildCalendarLink(payload) {
+            const guests = contactEmail ? `${contactEmail},${payload.email}` : payload.email;
+            const tzLine = payload.timezone ? `\nVisitor timezone: ${payload.timezone} (Aditya is IST, Bengaluru)\n` : '';
             const params = new URLSearchParams({
                 action: 'TEMPLATE',
                 text: `Virtual Coffee: ${payload.topic}`,
-                details: `Discussion topic: ${payload.topic}\n\nRequested by: ${payload.name} (${payload.role} @ ${payload.organization})\n\nNotes:\n${payload.notes}`,
-                add: `${MY_EMAIL},${payload.email}`
+                details: `Discussion topic: ${payload.topic}\n\nRequested by: ${payload.name} (${payload.role} @ ${payload.organization})\n${tzLine}\nNotes:\n${payload.notes}`,
+                add: guests
             });
             return `https://calendar.google.com/calendar/render?${params.toString()}`;
         }
@@ -712,10 +780,24 @@
             });
         }
 
+        // Email addresses are base64-encoded in the markup and decoded here at
+        // runtime, so the raw address isn't sitting in plaintext for scrapers that
+        // just regex the static HTML/JS source.
+        function deobfuscateEmailLinks() {
+            document.querySelectorAll('[data-email-b64]').forEach(el => {
+                const email = atob(el.dataset.emailB64);
+                el.href = 'mailto:' + email;
+                if (!el.textContent.trim()) el.textContent = email;
+            });
+        }
+
         window.addEventListener('DOMContentLoaded', () => {
             typeHeadline();
             typeWriter();
             initGlowColorPicker();
+            deobfuscateEmailLinks();
+            initLiveValidation();
+            displayTimezoneNote();
             if (!reduceMotion) {
                 document.querySelectorAll('.magnetic').forEach(el => initMagnetic(el));
             }
@@ -876,9 +958,178 @@
             calendarContainer.scrollIntoView({ behavior: 'smooth' });
         }
 
+        // Client-side field validation. Mirrors the backend's Pydantic constraints
+        // (length limits, required, email format) so visitors get instant, specific
+        // feedback instead of waiting on a round trip - the server still re-validates
+        // everything itself, since client checks are trivially bypassed.
+        const FIELD_RULES = {
+            'q-name': { required: 'Name is required', maxLength: 120, tooLong: 'Name too long (max 120 chars)' },
+            'q-org': { required: 'Organization is required', maxLength: 100, tooLong: 'Organization name too long (max 100 chars)' },
+            'q-role': { required: 'Role is required', maxLength: 150, tooLong: 'Role too long (max 150 chars)' },
+            'q-notes': { required: "Please share what you'd like to discuss", maxLength: 4000, tooLong: 'Message too long (max 4000 chars)' }
+        };
+        const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        function setFieldError(id, message) {
+            const errorEl = document.getElementById(id + '-error');
+            const inputEl = document.getElementById(id);
+            if (message) {
+                errorEl.textContent = message;
+                errorEl.classList.remove('hidden');
+                inputEl.classList.add('border-rose-500', 'dark:border-rose-500');
+            } else {
+                errorEl.classList.add('hidden');
+                inputEl.classList.remove('border-rose-500', 'dark:border-rose-500');
+            }
+            return message;
+        }
+
+        function validateTextField(id) {
+            const rule = FIELD_RULES[id];
+            const value = document.getElementById(id).value.trim();
+            let message = '';
+            if (!value) message = rule.required;
+            else if (value.length > rule.maxLength) message = rule.tooLong;
+            return !setFieldError(id, message);
+        }
+
+        function validateEmailField() {
+            const email = document.getElementById('q-email').value.trim();
+            let message = '';
+            if (!email) message = 'Email is required';
+            else if (email.length > 254 || !EMAIL_PATTERN.test(email)) message = 'Please use a valid email address';
+            return !setFieldError('q-email', message);
+        }
+
+        function validateConsentField() {
+            const checked = document.getElementById('q-consent').checked;
+            const message = checked ? '' : 'Please check the box to agree to being contacted before submitting.';
+            const el = document.getElementById('q-consent-error');
+            el.textContent = message;
+            el.classList.toggle('hidden', !message);
+            return !message;
+        }
+
+        function validateQuestionnaire() {
+            let firstInvalidId = null;
+            let isValid = true;
+
+            Object.keys(FIELD_RULES).forEach(id => {
+                if (!validateTextField(id)) {
+                    isValid = false;
+                    firstInvalidId = firstInvalidId || id;
+                }
+            });
+            if (!validateEmailField()) {
+                isValid = false;
+                firstInvalidId = firstInvalidId || 'q-email';
+            }
+            if (!validateConsentField()) {
+                isValid = false;
+                firstInvalidId = firstInvalidId || 'q-consent';
+            }
+
+            if (firstInvalidId) document.getElementById(firstInvalidId).focus();
+            return isValid;
+        }
+
+        // Real-time feedback as you type, debounced so it doesn't validate on
+        // every keystroke - just 400ms after you pause.
+        function initLiveValidation() {
+            const debounced = {
+                'q-name': () => validateTextField('q-name'),
+                'q-org': () => validateTextField('q-org'),
+                'q-role': () => validateTextField('q-role'),
+                'q-notes': () => validateTextField('q-notes'),
+                'q-email': () => validateEmailField()
+            };
+            const timers = {};
+            Object.entries(debounced).forEach(([id, validator]) => {
+                document.getElementById(id).addEventListener('input', () => {
+                    clearTimeout(timers[id]);
+                    timers[id] = setTimeout(validator, 400);
+                });
+            });
+            document.getElementById('q-consent').addEventListener('change', validateConsentField);
+        }
+
+        // Small toast system for transient success/error feedback, on top of the
+        // persistent inline error banner (which stays accessible after the toast
+        // auto-dismisses).
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            if (!container) return;
+            const toast = document.createElement('div');
+            const isError = type === 'error';
+            toast.className = 'pointer-events-auto max-w-sm px-4 py-3 rounded-xl border font-mono text-xs shadow-lg transition-all duration-300 opacity-0 translate-y-2 ' +
+                (isError
+                    ? 'bg-rose-50 dark:bg-rose-950/90 border-rose-300 dark:border-rose-800 text-rose-700 dark:text-rose-300'
+                    : 'bg-white/95 dark:bg-zinc-900/95 border-cyan-500/40 text-slate-800 dark:text-zinc-100');
+            toast.textContent = message;
+            container.appendChild(toast);
+            requestAnimationFrame(() => toast.classList.remove('opacity-0', 'translate-y-2'));
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-2');
+                setTimeout(() => toast.remove(), 300);
+            }, 4500);
+        }
+
+        // Shows the "view / delete my data" panel using the one-time id + token
+        // the backend hands back on submit. Only appears at all when the backend
+        // actually persisted a record (i.e. Upstash + encryption are configured).
+        function setupDataRightsPanel(submissionId, token) {
+            const panel = document.getElementById('data-rights-panel');
+            const viewLink = document.getElementById('data-view-link');
+            const deleteBtn = document.getElementById('data-delete-btn');
+            const statusEl = document.getElementById('data-delete-status');
+
+            viewLink.href = `${API_BASE}/api/submissions/${submissionId}?token=${encodeURIComponent(token)}`;
+            statusEl.classList.add('hidden');
+            deleteBtn.disabled = false;
+            deleteBtn.textContent = 'Delete my data now';
+
+            deleteBtn.onclick = async () => {
+                deleteBtn.disabled = true;
+                deleteBtn.textContent = 'Deleting...';
+                try {
+                    const response = await fetch(
+                        `${API_BASE}/api/submissions/${submissionId}?token=${encodeURIComponent(token)}`,
+                        { method: 'DELETE', signal: AbortSignal.timeout(6000) }
+                    );
+                    if (response.ok) {
+                        statusEl.textContent = 'Deleted. Your submission has been permanently removed.';
+                        statusEl.className = 'text-xs font-mono text-emerald-600 dark:text-emerald-400';
+                        viewLink.classList.add('hidden');
+                        deleteBtn.remove();
+                        showToast('Your data has been deleted.', 'success');
+                    } else {
+                        statusEl.textContent = "Couldn't delete right now. Please try again or email Aditya directly.";
+                        statusEl.className = 'text-xs font-mono text-rose-600 dark:text-rose-400';
+                        deleteBtn.disabled = false;
+                        deleteBtn.textContent = 'Delete my data now';
+                    }
+                } catch (error) {
+                    console.error('Data deletion error:', error);
+                    statusEl.textContent = "Couldn't reach the server. Please try again or email Aditya directly.";
+                    statusEl.className = 'text-xs font-mono text-rose-600 dark:text-rose-400';
+                    deleteBtn.disabled = false;
+                    deleteBtn.textContent = 'Delete my data now';
+                }
+                statusEl.classList.remove('hidden');
+            };
+
+            panel.classList.remove('hidden');
+        }
+
         async function submitQuestionnaire(event) {
             event.preventDefault();
-            
+
+            if (!validateQuestionnaire()) {
+                const firstError = document.querySelector('#questionnaire-card form p[id$="-error"]:not(.hidden)');
+                showToast(firstError ? firstError.textContent : 'Please fix the highlighted fields before submitting.', 'error');
+                return;
+            }
+
             const submitBtn = document.getElementById('submit-btn');
             const errorEl = document.getElementById('submit-error');
             errorEl.classList.add('hidden');
@@ -887,17 +1138,27 @@
 
             const payload = {
                 topic: selectedTopicName,
-                name: document.getElementById('q-name').value,
-                email: document.getElementById('q-email').value,
-                organization: document.getElementById('q-org').value,
-                role: document.getElementById('q-role').value,
-                notes: document.getElementById('q-notes').value
+                name: document.getElementById('q-name').value.trim(),
+                email: document.getElementById('q-email').value.trim(),
+                organization: document.getElementById('q-org').value.trim(),
+                role: document.getElementById('q-role').value.trim(),
+                notes: document.getElementById('q-notes').value.trim(),
+                consent: document.getElementById('q-consent').checked,
+                timezone: getTimezoneInfo().zone,
+                website: document.getElementById('q-website').value
             };
 
             document.getElementById('calendar-link').href = buildCalendarLink(payload);
 
             const questionnaireCard = document.getElementById('questionnaire-card');
             const calendarContainer = document.getElementById('calendar-container');
+
+            if (payload.website) {
+                // Honeypot filled in - almost certainly a bot. Skip the network call
+                // entirely and just show the same success state a real visitor gets.
+                revealCalendar(questionnaireCard, calendarContainer);
+                return;
+            }
 
             try {
                 // Connects to Python FastAPI Backend (emails the submission to me).
@@ -913,10 +1174,22 @@
                 const result = await response.json();
 
                 if (response.ok) {
+                    showToast('Thanks! Check your calendar link below.', 'success');
+                    if (result.submission_id && result.management_token) {
+                        setupDataRightsPanel(result.submission_id, result.management_token);
+                    }
+                    event.target.reset();
+                    Object.keys(FIELD_RULES).forEach(id => setFieldError(id, ''));
+                    setFieldError('q-email', '');
+                    document.getElementById('q-consent-error').classList.add('hidden');
                     revealCalendar(questionnaireCard, calendarContainer);
                 } else {
-                    errorEl.textContent = "Couldn't submit the questionnaire. Please check your inputs and try again.";
+                    const message = response.status === 429
+                        ? "Too many submissions from this connection. Please try again later."
+                        : "Couldn't submit the questionnaire. Please check your inputs and try again.";
+                    errorEl.textContent = message;
                     errorEl.classList.remove('hidden');
+                    showToast(message, 'error');
                     submitBtn.textContent = "Save Answers & Proceed to Calendar Booking →";
                     submitBtn.disabled = false;
                 }
