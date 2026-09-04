@@ -1,13 +1,19 @@
 <!DOCTYPE html>
-<html lang="en" id="html-root">
+<html lang="en" id="html-root" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aditya Singh | Deep-Tech Operator</title>
+    <meta name="description" content="Aditya Singh - Founding Member & VP at BosonQ Psi, building quantum-inspired simulation for heavy industry. Deep-tech operator, ex-TCS and ZS Associates.">
+    <meta property="og:title" content="Aditya Singh | Deep-Tech Operator">
+    <meta property="og:description" content="Founding Member & VP at BosonQ Psi, building quantum-inspired simulation for heavy industry.">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2309090b'/%3E%3Ctext x='32' y='45' font-family='monospace' font-size='34' font-weight='700' fill='%2322d3ee' text-anchor='middle'%3EA%3C/text%3E%3C/svg%3E">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Roboto+Mono:wght@400;500;700&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -15,7 +21,7 @@
                 extend: {
                     fontFamily: {
                         sans: ['"DM Sans"', 'sans-serif'],
-                        mono: ['"JetBrains Mono"', 'monospace'],
+                        mono: ['"Roboto Mono"', 'monospace'],
                     },
                 }
             }
@@ -24,14 +30,14 @@
     <style>
         body.light-mode {
             background-color: #F8FAFC;
-            background-image: 
+            background-image:
                 radial-gradient(at 0% 0%, rgba(226, 232, 240, 0.9) 0px, transparent 50%),
                 radial-gradient(at 100% 100%, rgba(203, 213, 225, 0.7) 0px, transparent 50%);
             color: #0f172a;
         }
         body.dark-mode {
-            background-color: #000000;
-            background-image: 
+            background-color: #09090b;
+            background-image:
                 radial-gradient(at 15% 15%, rgba(38, 38, 38, 0.4) 0px, transparent 55%),
                 radial-gradient(at 85% 85%, rgba(20, 20, 20, 0.7) 0px, transparent 55%);
             color: #f1f5f9;
@@ -44,13 +50,155 @@
             0%, 100% { opacity: 1; }
             50% { opacity: 0; }
         }
+
+        /* Fixed film-grain overlay for depth on flat sections. */
+        #grain-overlay {
+            position: fixed; inset: 0; z-index: 55; pointer-events: none;
+            opacity: 0.035;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+        }
+        body.dark-mode #grain-overlay { opacity: 0.05; }
+
+        /* Background atmosphere: dark-mode-only glow + stars, fixed behind every tab (not just Home). */
+        .hero-atmosphere { position: fixed; inset: 0; overflow: hidden; pointer-events: none; z-index: -1; opacity: 0; transition: opacity 0.4s ease; }
+        body.dark-mode .hero-atmosphere { opacity: 1; }
+        :root { --glow-r: 34; --glow-g: 211; --glow-b: 238; }
+        .hero-glow { position: absolute; left: 50%; top: -20%; width: 70vw; max-width: 900px; min-width: 500px; aspect-ratio: 1; transform: translateX(-50%); border-radius: 9999px; background: radial-gradient(circle, rgba(var(--glow-r), var(--glow-g), var(--glow-b), 0.14), transparent 70%); filter: blur(20px); animation: heroGlowBreathe 4.5s ease-in-out infinite; }
+        .hero-glow-b { left: 12%; top: auto; bottom: -25%; width: 55vw; max-width: 700px; min-width: 380px; transform: none; animation: heroGlowBreatheB 6.5s ease-in-out infinite; }
+        .hero-beam { position: absolute; left: 50%; top: 0; width: 1px; height: 100%; transform: translateX(-50%); background: linear-gradient(to bottom, rgba(var(--glow-r), var(--glow-g), var(--glow-b), 0.4), transparent 75%); animation: heroBeamBreathe 4.5s ease-in-out infinite; }
+        @keyframes heroGlowBreathe {
+            0%, 100% { opacity: 0.7; transform: translateX(-50%) scale(1); }
+            50% { opacity: 1; transform: translateX(-50%) scale(1.12); }
+        }
+        @keyframes heroGlowBreatheB {
+            0%, 100% { opacity: 0.6; transform: scale(1); }
+            50% { opacity: 0.9; transform: scale(1.1); }
+        }
+        @keyframes heroBeamBreathe {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+
+        /* CTA banner glow: a bright bloom rising from behind the card, always on since the
+           banner itself is a dark surface in both themes (unlike the hero atmosphere). */
+        .cta-glow {
+            position: absolute; left: 50%; bottom: -35%; width: 55%; max-width: 460px; aspect-ratio: 1;
+            transform: translateX(-50%); border-radius: 9999px; pointer-events: none;
+            background: radial-gradient(circle, rgba(var(--glow-r), var(--glow-g), var(--glow-b), 0.4), transparent 70%);
+            filter: blur(40px);
+            animation: heroGlowBreatheB 5s ease-in-out infinite;
+        }
+        .hero-star { position: absolute; width: 2px; height: 2px; border-radius: 9999px; background: rgb(var(--glow-r), var(--glow-g), var(--glow-b)); animation: twinkle 3s ease-in-out infinite; }
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.15; }
+            50% { opacity: 0.85; }
+        }
+
+        /* Scroll reveal: fades items in once as they enter the viewport (About timeline, Blog cards). */
+        .scroll-reveal { opacity: 0; transform: translateY(16px); transition: opacity 0.5s ease-out, transform 0.5s ease-out; }
+        .scroll-reveal.is-visible { opacity: 1; transform: none; }
+
+        /* About timeline: accent line grows in as you scroll past it (native scroll-driven animation). */
+        .timeline-progress {
+            position: absolute; left: -2px; top: 0; width: 2px; height: 100%;
+            background: linear-gradient(to bottom, #22d3ee, #0891b2);
+            transform: scaleY(0); transform-origin: top;
+            animation: timelineGrow linear;
+            animation-timeline: view();
+            animation-range: entry 0% cover 90%;
+        }
+        @keyframes timelineGrow { to { transform: scaleY(1); } }
+        @supports not (animation-timeline: view()) {
+            .timeline-progress { display: none; }
+        }
+        .scroll-reveal.is-visible .timeline-dot { animation: dotPing 0.6s ease-out; }
+        @keyframes dotPing {
+            0% { box-shadow: 0 0 0 0 rgba(34, 211, 238, 0.55); }
+            100% { box-shadow: 0 0 0 10px rgba(34, 211, 238, 0); }
+        }
+
+        /* Orbit loader: two counter-rotating rings for the questionnaire submit state. */
+        .orbit-loader { position: relative; width: 14px; height: 14px; display: inline-block; }
+        .orbit-loader span { position: absolute; inset: 0; border-radius: 9999px; border: 1.5px solid transparent; border-top-color: currentColor; animation: orbitSpin 0.9s linear infinite; }
+        .orbit-loader span:last-child { inset: 3px; border-top-color: transparent; border-right-color: currentColor; animation-duration: 0.6s; animation-direction: reverse; }
+        @keyframes orbitSpin { to { transform: rotate(360deg); } }
+
+        /* Nav compresses slightly once you've scrolled past the hero (native scroll-driven, progressive enhancement). */
+        @supports (animation-timeline: scroll()) {
+            #nav-container {
+                animation: navCompress linear both;
+                animation-timeline: scroll();
+                animation-range: 0px 220px;
+            }
+            @keyframes navCompress {
+                from { padding-top: 1.25rem; padding-bottom: 1.25rem; }
+                to { padding-top: 0.625rem; padding-bottom: 0.625rem; }
+            }
+        }
+
+        /* Hero eyebrow badge breathes very slightly to draw the eye without looping loudly. */
+        .badge-pulse { animation: badgeGlow 3.5s ease-in-out infinite; }
+        @keyframes badgeGlow {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(34, 211, 238, 0); }
+            50% { box-shadow: 0 0 14px 1px rgba(34, 211, 238, 0.25); }
+        }
+
+        /* Bulb cards: touching one lights it up. Plain box-shadow + border-color transition only
+           on purpose - no pseudo-elements, no custom properties, nothing that can silently fail
+           to render. */
+        .spotlight-card {
+            transition: box-shadow 0.25s ease, border-color 0.25s ease;
+        }
+        .spotlight-card:hover {
+            border-color: rgb(34, 211, 238) !important;
+            box-shadow: 0 0 0 1px rgba(34, 211, 238, 0.5), 0 0 40px 8px rgba(34, 211, 238, 0.35);
+        }
+
+        /* Same lighting idea, sized for bare text links (nav/footer links, "view more" links)
+           that have no border or fill to glow behind. */
+        .glow-text { transition: text-shadow 0.25s ease; }
+        .glow-text:hover { text-shadow: 0 0 12px rgba(34, 211, 238, 0.65); }
+
+        @media (prefers-reduced-motion: reduce) {
+            .typewriter-cursor::after { animation: none; }
+            .hero-star { animation: none; opacity: 0.4; }
+            .scroll-reveal { opacity: 1; transform: none; transition: none; }
+            .timeline-progress { animation: none; transform: scaleY(1); }
+            .scroll-reveal.is-visible .timeline-dot { animation: none; }
+            .orbit-loader span { animation: none; }
+            #nav-container { animation: none; }
+            .badge-pulse { animation: none; }
+            .hero-glow, .hero-glow-b, .hero-beam, .cta-glow { animation: none; }
+        }
     </style>
 </head>
-<body class="light-mode font-sans antialiased selection:bg-cyan-500 selection:text-white min-h-screen flex flex-col justify-between transition-colors duration-300" id="body-element">
+<body class="dark-mode font-sans antialiased selection:bg-cyan-500 selection:text-white min-h-screen flex flex-col justify-between transition-colors duration-300" id="body-element">
+
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[60] focus:px-4 focus:py-2 focus:rounded-lg focus:bg-cyan-500 focus:text-slate-950 focus:font-mono focus:text-xs focus:font-bold focus:uppercase">Skip to content</a>
+
+    <div id="grain-overlay" aria-hidden="true"></div>
+
+    <div class="hero-atmosphere" aria-hidden="true">
+        <div class="hero-glow"></div>
+        <div class="hero-glow hero-glow-b"></div>
+        <div class="hero-beam"></div>
+        <span class="hero-star" style="top:8%; left:12%; animation-delay:0s;"></span>
+        <span class="hero-star" style="top:14%; left:68%; animation-delay:0.9s;"></span>
+        <span class="hero-star" style="top:24%; left:38%; animation-delay:1.6s;"></span>
+        <span class="hero-star" style="top:32%; left:88%; animation-delay:0.4s;"></span>
+        <span class="hero-star" style="top:41%; left:6%; animation-delay:2.1s;"></span>
+        <span class="hero-star" style="top:47%; left:54%; animation-delay:1.2s;"></span>
+        <span class="hero-star" style="top:53%; left:92%; animation-delay:1.9s;"></span>
+        <span class="hero-star" style="top:60%; left:22%; animation-delay:0.6s;"></span>
+        <span class="hero-star" style="top:68%; left:76%; animation-delay:1.4s;"></span>
+        <span class="hero-star" style="top:75%; left:44%; animation-delay:2.4s;"></span>
+        <span class="hero-star" style="top:83%; left:15%; animation-delay:0.2s;"></span>
+        <span class="hero-star" style="top:90%; left:64%; animation-delay:1.7s;"></span>
+    </div>
 
     <div class="w-full flex-grow">
         <!-- Sticky Navigation -->
-        <nav id="nav-container" class="w-full px-6 md:px-16 py-5 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-slate-200/60 dark:border-zinc-800/80 bg-white/70 dark:bg-black/80 backdrop-blur-xl sticky top-0 z-50 transition-colors duration-300">
+        <nav id="nav-container" class="w-full px-6 md:px-16 py-5 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-slate-200/60 dark:border-zinc-800/80 bg-white/70 dark:bg-zinc-950/80 backdrop-blur-xl sticky top-0 z-50 transition-colors duration-300">
             <div class="cursor-pointer" onclick="switchTab('home')">
                 <span id="nav-tag" class="font-mono text-xs text-slate-500 dark:text-zinc-400 tracking-widest uppercase">// ADITYA_SINGH // BENGALURU</span>
                 <h1 id="nav-title" class="text-xl font-bold tracking-tight text-slate-900 dark:text-white">Aditya Singh</h1>
@@ -64,45 +212,50 @@
                     <button onclick="switchTab('coffee')" id="btn-coffee" class="px-4 py-2 rounded-lg font-medium transition text-slate-700 dark:text-zinc-300 hover:text-slate-900 dark:hover:text-white">Virtual Coffee</button>
                 </div>
 
-                <button onclick="toggleTheme()" id="theme-toggle-btn" class="p-2.5 rounded-xl border border-slate-300/60 dark:border-zinc-800 bg-white/80 dark:bg-zinc-900 text-slate-700 dark:text-zinc-200 hover:bg-slate-100 dark:hover:bg-zinc-800 transition font-mono text-xs shadow-xs" title="Toggle Light/Dark Mode">
-                    <span id="theme-icon">🌙 Dark</span>
+                <button onclick="toggleTheme()" id="theme-toggle-btn" class="spotlight-card p-2.5 rounded-xl border border-slate-300/60 dark:border-zinc-800 bg-white/80 dark:bg-zinc-900 text-slate-700 dark:text-zinc-200 hover:bg-slate-100 dark:hover:bg-zinc-800 transition font-mono text-xs shadow-xs" title="Toggle Light/Dark Mode">
+                    <span id="theme-icon">☀️ Light</span>
                 </button>
+
+                <label class="spotlight-card relative flex items-center justify-center p-2.5 rounded-xl border border-slate-300/60 dark:border-zinc-800 bg-white/80 dark:bg-zinc-900 cursor-pointer transition" title="Change the background glow color">
+                    <input type="color" id="glow-color-picker" value="#22d3ee" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" aria-label="Background glow color">
+                    <span id="glow-color-swatch" class="w-4 h-4 rounded-full border border-slate-400 dark:border-zinc-600" style="background:#22d3ee;"></span>
+                </label>
             </div>
         </nav>
 
         <!-- Main Workspace -->
-        <main class="w-full px-6 md:px-16 py-10">
+        <main id="main-content" class="w-full px-6 md:px-16 py-10">
 
             <!-- TAB 1: HOME -->
-            <section id="tab-home" class="max-w-6xl mx-auto space-y-16 animate-fadeIn">
+            <section id="tab-home" class="max-w-6xl mx-auto space-y-16">
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center pt-6">
                     <div class="lg:col-span-8 space-y-6">
-                        <span class="inline-block font-mono text-xs px-3 py-1 rounded-full bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 border border-cyan-500/20 font-semibold tracking-wider uppercase">
+                        <span class="badge-pulse inline-block font-mono text-xs px-3 py-1 rounded-full bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 border border-cyan-500/20 font-semibold tracking-wider uppercase">
                             Founding Member & VP @ BosonQ Psi
                         </span>
                         <h2 class="text-5xl md:text-7xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-none">
-                            Hey, I'm Aditya.
+                            <span id="headline-text" class="typewriter-cursor"></span>
                         </h2>
                         <p class="font-mono text-lg md:text-xl text-slate-600 dark:text-zinc-300 h-10">
                             <span id="typewriter-text" class="typewriter-cursor"></span>
                         </p>
                         <p class="text-slate-700 dark:text-zinc-300 text-lg md:text-xl leading-relaxed font-light">
-                            By day (and most nights), I’m at <strong class="text-slate-900 dark:text-white font-semibold">BosonQ Psi</strong>. We’re overhauling simulation and modeling with quantum-inspired math—helping mission-critical industries solve massive computational bottlenecks without just throwing brute-force hardware at the problem.
+                            By day (and most nights), I’m at <strong class="text-slate-900 dark:text-white font-semibold">BosonQ Psi</strong>. We’re overhauling simulation and modeling with quantum-inspired math, helping mission-critical industries solve massive computational bottlenecks without just throwing brute-force hardware at the problem.
                         </p>
                     </div>
 
-                    <div class="lg:col-span-4 bg-gradient-to-br from-slate-200/50 dark:from-zinc-900/90 to-slate-300/30 dark:to-black p-8 rounded-3xl border border-slate-300/80 dark:border-zinc-800 space-y-6 shadow-xl">
+                    <div class="lg:col-span-4 bg-gradient-to-br from-slate-200/50 dark:from-zinc-900/90 to-slate-300/30 dark:to-zinc-950 p-8 rounded-3xl border border-slate-300/80 dark:border-zinc-800 space-y-6 shadow-xl">
                         <span class="font-mono text-xs text-slate-500 dark:text-zinc-400 uppercase tracking-widest">// QUICK_LINKS</span>
                         <div class="flex flex-col gap-3 font-mono text-xs">
-                            <button onclick="switchTab('coffee')" class="w-full py-3.5 px-4 bg-slate-900 hover:bg-slate-800 dark:bg-zinc-100 dark:hover:bg-white dark:text-zinc-900 text-white font-semibold uppercase tracking-wider rounded-xl transition shadow-md text-left flex justify-between items-center">
+                            <button onclick="switchTab('coffee')" class="magnetic w-full py-3.5 px-4 bg-slate-900 hover:bg-slate-800 dark:bg-zinc-100 dark:hover:bg-white dark:text-zinc-900 text-white font-semibold uppercase tracking-wider rounded-xl transition shadow-md text-left flex justify-between items-center">
                                 <span>Grab Virtual Coffee</span>
                                 <span>&rarr;</span>
                             </button>
-                            <a href="mailto:singh.aditya0395@gmail.com" class="w-full py-3.5 px-4 bg-white/80 hover:bg-white dark:bg-zinc-900 dark:hover:bg-zinc-800 text-slate-700 dark:text-zinc-200 font-semibold uppercase tracking-wider rounded-xl border border-slate-300 dark:border-zinc-800 transition text-left flex justify-between items-center">
+                            <a href="mailto:singh.aditya0395@gmail.com" class="w-full py-3.5 px-4 bg-white/80 hover:bg-white active:scale-[0.98] dark:bg-zinc-900 dark:hover:bg-zinc-800 text-slate-700 dark:text-zinc-200 font-semibold uppercase tracking-wider rounded-xl border border-slate-300 dark:border-zinc-800 transition text-left flex justify-between items-center spotlight-card">
                                 <span>Email Me Directly</span>
                                 <span class="text-slate-400">@</span>
                             </a>
-                            <a href="https://linkedin.com/in/audz12" target="_blank" class="w-full py-3.5 px-4 bg-white/80 hover:bg-white dark:bg-zinc-900 dark:hover:bg-zinc-800 text-slate-700 dark:text-zinc-200 font-semibold uppercase tracking-wider rounded-xl border border-slate-300 dark:border-zinc-800 transition text-left flex justify-between items-center">
+                            <a href="https://linkedin.com/in/audz12" target="_blank" class="w-full py-3.5 px-4 bg-white/80 hover:bg-white active:scale-[0.98] dark:bg-zinc-900 dark:hover:bg-zinc-800 text-slate-700 dark:text-zinc-200 font-semibold uppercase tracking-wider rounded-xl border border-slate-300 dark:border-zinc-800 transition text-left flex justify-between items-center spotlight-card">
                                 <span>Follow on LinkedIn</span>
                                 <span class="text-slate-400">↗</span>
                             </a>
@@ -112,22 +265,22 @@
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 pt-6 border-t border-slate-200 dark:border-zinc-800">
                     <div class="space-y-4">
-                        <span class="font-mono text-xs text-slate-500 dark:text-zinc-400 font-bold uppercase tracking-wider">// 01. THE BACKGROUND</span>
+                        <span class="font-mono text-xs text-slate-500 dark:text-zinc-400 font-bold uppercase tracking-wider">// THE BACKGROUND</span>
                         <h3 class="text-2xl font-bold text-slate-900 dark:text-white">The Bizz + Tech Mix (TCS & ZS Days)</h3>
                         <p class="text-slate-600 dark:text-zinc-300 leading-relaxed text-base">
-                            I speak fluent code <em>and</em> fluent business because I've spent time in the trenches of both. I started out writing code and building data pipelines at TCS. Then, during my time at ZS Associates, I got a front-row seat to management consulting fused with data. That stint taught me how businesses actually tick—figuring out market competition, product launches, pricing strategies, and turning raw numbers into actual strategy instead of just pretty slide decks.
+                            I speak fluent code <em>and</em> fluent business because I've spent time in the trenches of both. I started out writing code and building data pipelines at TCS. Then, during my time at ZS Associates, I got a front-row seat to management consulting fused with data. That stint taught me how businesses actually tick: figuring out market competition, product launches, pricing strategies, and turning raw numbers into actual strategy instead of just pretty slide decks.
                         </p>
                     </div>
 
                     <div class="space-y-4">
-                        <span class="font-mono text-xs text-slate-500 dark:text-zinc-400 font-bold uppercase tracking-wider">// 02. THE REALITY CHECK</span>
+                        <span class="font-mono text-xs text-slate-500 dark:text-zinc-400 font-bold uppercase tracking-wider">// THE REALITY CHECK</span>
                         <h3 class="text-2xl font-bold text-slate-900 dark:text-white">My Blooper Reel & Daily Friction</h3>
                         <div class="space-y-3">
-                            <div class="p-4 rounded-xl bg-slate-200/50 dark:bg-zinc-900/60 border border-slate-300/60 dark:border-zinc-800">
+                            <div class="p-4 rounded-xl bg-slate-200/50 dark:bg-zinc-900/60 border border-slate-300/60 dark:border-zinc-800 spotlight-card">
                                 <h4 class="font-bold text-slate-900 dark:text-white text-sm">DeliverBud (College Venture)</h4>
                                 <p class="text-slate-600 dark:text-zinc-400 text-xs mt-1">A masterclass in how <em>not</em> to run a startup, teaching me more than any textbook ever could.</p>
                             </div>
-                            <div class="p-4 rounded-xl bg-slate-200/50 dark:bg-zinc-900/60 border border-slate-300/60 dark:border-zinc-800">
+                            <div class="p-4 rounded-xl bg-slate-200/50 dark:bg-zinc-900/60 border border-slate-300/60 dark:border-zinc-800 spotlight-card">
                                 <h4 class="font-bold text-slate-900 dark:text-white text-sm">Failing Every Other Day</h4>
                                 <p class="text-slate-600 dark:text-zinc-400 text-xs mt-1">If you're building in deep tech and not hitting walls regularly, you aren't trying hard enough.</p>
                             </div>
@@ -135,44 +288,50 @@
                     </div>
                 </div>
 
-                <div class="p-10 rounded-3xl bg-gradient-to-r from-slate-900 to-slate-800 dark:from-zinc-900 dark:to-black text-white border border-slate-800 dark:border-zinc-800 shadow-2xl flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-                    <div class="space-y-2 max-w-2xl">
-                        <span class="font-mono text-xs text-cyan-400 uppercase tracking-widest">// THE_REAL_GOAL</span>
-                        <p class="text-lg md:text-xl font-medium leading-relaxed">
-                            I'm not here to sell anything or build a shiny portfolio. Being knee-deep in deep tech, my only real goal is simple: find like-minded people and help boost this ecosystem.
-                        </p>
+                <div class="relative">
+                    <div class="cta-glow" aria-hidden="true"></div>
+                    <div class="relative p-10 rounded-3xl bg-gradient-to-r from-slate-900 to-slate-800 dark:from-zinc-900 dark:to-zinc-950 text-white border border-slate-800 dark:border-zinc-800 shadow-2xl flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+                        <div class="space-y-2 max-w-2xl">
+                            <span class="font-mono text-xs text-cyan-400 uppercase tracking-widest">// THE_REAL_GOAL</span>
+                            <p class="text-lg md:text-xl font-medium leading-relaxed">
+                                I'm not here to sell anything or build a shiny portfolio. Being knee-deep in deep tech, my only real goal is simple: find like-minded people and help boost this ecosystem.
+                            </p>
+                        </div>
+                        <button onclick="switchTab('coffee')" class="magnetic px-6 py-4 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-mono text-xs font-bold uppercase tracking-wider rounded-xl transition shadow-lg shrink-0">
+                            Let's Connect &rarr;
+                        </button>
                     </div>
-                    <button onclick="switchTab('coffee')" class="px-6 py-4 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-mono text-xs font-bold uppercase tracking-wider rounded-xl transition shadow-lg shrink-0">
-                        Let's Connect &rarr;
-                    </button>
                 </div>
             </section>
 
             <!-- TAB 2: ABOUT ME -->
-            <section id="tab-about" class="hidden space-y-12 max-w-4xl mx-auto animate-fadeIn">
+            <section id="tab-about" class="hidden space-y-12 max-w-4xl mx-auto">
                 <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 border-b border-slate-200 dark:border-zinc-800 pb-6">
                     <div>
                         <span class="font-mono text-xs text-slate-500 dark:text-zinc-400 uppercase tracking-widest">// THE_JOURNEY // TIMELINE</span>
                         <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white mt-1">The Career Timeline</h2>
                     </div>
-                    <a href="https://linkedin.com/in/audz12" target="_blank" class="font-mono text-xs text-cyan-600 dark:text-cyan-400 hover:underline">View Official LinkedIn Profile ↗</a>
+                    <a href="https://linkedin.com/in/audz12" target="_blank" class="glow-text font-mono text-xs text-cyan-600 dark:text-cyan-400 hover:underline">View Official LinkedIn Profile ↗</a>
                 </div>
 
+                <div id="timeline-progress-counter" class="sticky top-20 z-10 w-fit ml-4 md:ml-8 font-mono text-xs text-slate-500 dark:text-zinc-400 bg-white/90 dark:bg-zinc-950/90 backdrop-blur border border-slate-300/60 dark:border-zinc-800 rounded-full px-3 py-1">01 / 04</div>
+
                 <div class="relative border-l-2 border-slate-300 dark:border-zinc-800 ml-4 md:ml-8 space-y-12 py-4">
-                    <div class="relative pl-8 md:pl-12 group">
-                        <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-slate-900 dark:bg-zinc-100 border-4 border-slate-100 dark:border-black transition group-hover:scale-125"></div>
-                        <div class="p-6 rounded-2xl bg-white/90 dark:bg-zinc-900/80 border border-slate-300/80 dark:border-zinc-800 shadow-sm space-y-2 hover:border-cyan-500/50 transition">
-                            <span class="font-mono text-xs text-cyan-600 dark:text-cyan-400 font-bold tracking-wider uppercase">2015 – 2019 // BIT Durg</span>
+                    <div class="timeline-progress" aria-hidden="true"></div>
+                    <div class="relative pl-8 md:pl-12 group scroll-reveal" data-index="1">
+                        <div class="timeline-dot absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-slate-900 dark:bg-zinc-100 border-4 border-slate-100 dark:border-zinc-950 transition group-hover:scale-125"></div>
+                        <div class="p-6 rounded-2xl bg-white/90 dark:bg-zinc-900/80 border border-slate-300/80 dark:border-zinc-800 shadow-sm space-y-2 hover:border-cyan-500/50 transition spotlight-card">
+                            <span class="font-mono text-xs text-cyan-600 dark:text-cyan-400 font-bold tracking-wider uppercase">2015-2019 // BIT Durg</span>
                             <h3 class="text-xl font-bold text-slate-900 dark:text-white">Undergrad & Founding DeliverBud</h3>
                             <p class="text-slate-600 dark:text-zinc-300 text-sm leading-relaxed">
-                                Earned my B.E. in Information Technology. Far more educational than coursework was building *DeliverBud*—a chaotic, high-friction college venture that gave me my first true taste of building products from scratch.
+                                Earned my B.E. in Information Technology. Far more educational than coursework was building *DeliverBud*, a chaotic, high-friction college venture that gave me my first true taste of building products from scratch.
                             </p>
                         </div>
                     </div>
 
-                    <div class="relative pl-8 md:pl-12 group">
-                        <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-slate-900 dark:bg-zinc-100 border-4 border-slate-100 dark:border-black transition group-hover:scale-125"></div>
-                        <div class="p-6 rounded-2xl bg-white/90 dark:bg-zinc-900/80 border border-slate-300/80 dark:border-zinc-800 shadow-sm space-y-2 hover:border-cyan-500/50 transition">
+                    <div class="relative pl-8 md:pl-12 group scroll-reveal" data-index="2">
+                        <div class="timeline-dot absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-slate-900 dark:bg-zinc-100 border-4 border-slate-100 dark:border-zinc-950 transition group-hover:scale-125"></div>
+                        <div class="p-6 rounded-2xl bg-white/90 dark:bg-zinc-900/80 border border-slate-300/80 dark:border-zinc-800 shadow-sm space-y-2 hover:border-cyan-500/50 transition spotlight-card">
                             <span class="font-mono text-xs text-cyan-600 dark:text-cyan-400 font-bold tracking-wider uppercase">TCS // Architecture Era</span>
                             <h3 class="text-xl font-bold text-slate-900 dark:text-white">Tata Consultancy Services</h3>
                             <p class="text-slate-600 dark:text-zinc-300 text-sm leading-relaxed">
@@ -181,9 +340,9 @@
                         </div>
                     </div>
 
-                    <div class="relative pl-8 md:pl-12 group">
-                        <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-slate-900 dark:bg-zinc-100 border-4 border-slate-100 dark:border-black transition group-hover:scale-125"></div>
-                        <div class="p-6 rounded-2xl bg-white/90 dark:bg-zinc-900/80 border border-slate-300/80 dark:border-zinc-800 shadow-sm space-y-2 hover:border-cyan-500/50 transition">
+                    <div class="relative pl-8 md:pl-12 group scroll-reveal" data-index="3">
+                        <div class="timeline-dot absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-slate-900 dark:bg-zinc-100 border-4 border-slate-100 dark:border-zinc-950 transition group-hover:scale-125"></div>
+                        <div class="p-6 rounded-2xl bg-white/90 dark:bg-zinc-900/80 border border-slate-300/80 dark:border-zinc-800 shadow-sm space-y-2 hover:border-cyan-500/50 transition spotlight-card">
                             <span class="font-mono text-xs text-cyan-600 dark:text-cyan-400 font-bold tracking-wider uppercase">ZS Associates // Consulting</span>
                             <h3 class="text-xl font-bold text-slate-900 dark:text-white">Management Consulting & Strategy</h3>
                             <p class="text-slate-600 dark:text-zinc-300 text-sm leading-relaxed">
@@ -192,13 +351,13 @@
                         </div>
                     </div>
 
-                    <div class="relative pl-8 md:pl-12 group">
-                        <div class="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-slate-900 dark:bg-zinc-100 border-4 border-slate-100 dark:border-black transition group-hover:scale-125"></div>
-                        <div class="p-6 rounded-2xl bg-white/90 dark:bg-zinc-900/80 border border-slate-300/80 dark:border-zinc-800 shadow-sm space-y-2 hover:border-cyan-500/50 transition">
-                            <span class="font-mono text-xs text-cyan-600 dark:text-cyan-400 font-bold tracking-wider uppercase">2022 – PRESENT // Deep Tech Leap</span>
+                    <div class="relative pl-8 md:pl-12 group scroll-reveal" data-index="4">
+                        <div class="timeline-dot absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-slate-900 dark:bg-zinc-100 border-4 border-slate-100 dark:border-zinc-950 transition group-hover:scale-125"></div>
+                        <div class="p-6 rounded-2xl bg-white/90 dark:bg-zinc-900/80 border border-slate-300/80 dark:border-zinc-800 shadow-sm space-y-2 hover:border-cyan-500/50 transition spotlight-card">
+                            <span class="font-mono text-xs text-cyan-600 dark:text-cyan-400 font-bold tracking-wider uppercase">2022-PRESENT // Deep Tech Leap</span>
                             <h3 class="text-xl font-bold text-slate-900 dark:text-white">BosonQ Psi (BQP)</h3>
                             <p class="text-slate-600 dark:text-zinc-300 text-sm leading-relaxed">
-                                Stepped in as a Founding Member and Vice President. Leading business, strategic partnerships, operations, and security—scaling our quantum-inspired mathematical engines across global heavy industries.
+                                Stepped in as a Founding Member and Vice President. Leading business, strategic partnerships, operations, and security, scaling our quantum-inspired mathematical engines across global heavy industries.
                             </p>
                         </div>
                     </div>
@@ -206,7 +365,7 @@
             </section>
 
             <!-- TAB 3: BLOG & MEDIA HUB -->
-            <section id="tab-blog" class="hidden space-y-10 max-w-5xl mx-auto animate-fadeIn">
+            <section id="tab-blog" class="hidden space-y-10 max-w-5xl mx-auto">
                 <div>
                     <span class="font-mono text-xs text-slate-500 dark:text-zinc-400 uppercase tracking-widest">// MEDIA_AND_MEMOS // THOUGHTS_AND_TALKS</span>
                     <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white mt-1">Things I’ve Written, Said, or Recorded</h2>
@@ -215,14 +374,14 @@
 
                 <div class="space-y-12">
                     <div class="space-y-4">
-                        <h3 class="font-mono text-xs text-cyan-600 dark:text-cyan-400 uppercase tracking-widest font-bold">01 // Press & Quotes</h3>
+                        <h3 class="font-mono text-xs text-cyan-600 dark:text-cyan-400 uppercase tracking-widest font-bold">Press & Quotes</h3>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <a href="https://bosonqpsi.com" target="_blank" class="block p-6 rounded-2xl bg-white/90 dark:bg-zinc-900/80 border border-slate-300/80 dark:border-zinc-800 hover:border-cyan-500/60 transition group">
+                            <a href="https://bosonqpsi.com" target="_blank" class="block p-6 rounded-2xl bg-white/90 dark:bg-zinc-900/80 border border-slate-300/80 dark:border-zinc-800 hover:border-cyan-500/60 transition group scroll-reveal spotlight-card">
                                 <span class="font-mono text-xs text-slate-400 dark:text-zinc-500 block mb-2">[ FEATURED QUOTE ] ↗</span>
                                 <h4 class="text-lg font-bold text-slate-900 dark:text-white group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition mb-1">Quantum Simulation in Defense & Aerospace</h4>
                                 <p class="text-slate-600 dark:text-zinc-400 text-sm">Commentary on quantum-inspired optimization for global heavy engineering simulations.</p>
                             </a>
-                            <a href="https://bosonqpsi.com" target="_blank" class="block p-6 rounded-2xl bg-white/90 dark:bg-zinc-900/80 border border-slate-300/80 dark:border-zinc-800 hover:border-cyan-500/60 transition group">
+                            <a href="https://bosonqpsi.com" target="_blank" class="block p-6 rounded-2xl bg-white/90 dark:bg-zinc-900/80 border border-slate-300/80 dark:border-zinc-800 hover:border-cyan-500/60 transition group scroll-reveal spotlight-card">
                                 <span class="font-mono text-xs text-slate-400 dark:text-zinc-500 block mb-2">[ PRESS COVERAGE ] ↗</span>
                                 <h4 class="text-lg font-bold text-slate-900 dark:text-white group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition mb-1">Scaling BosonQ Psi Ecosystem</h4>
                                 <p class="text-slate-600 dark:text-zinc-400 text-sm">Media mentions regarding our funding milestones and enterprise traction.</p>
@@ -231,38 +390,39 @@
                     </div>
 
                     <div class="space-y-4">
-                        <h3 class="font-mono text-xs text-cyan-600 dark:text-cyan-400 uppercase tracking-widest font-bold">02 // Videos & Talks</h3>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <a href="https://youtu.be/mv73Qe2Ib48" target="_blank" class="block p-6 rounded-2xl bg-white/90 dark:bg-zinc-900/80 border border-slate-300/80 dark:border-zinc-800 hover:border-cyan-500/60 transition group">
+                        <h3 class="font-mono text-xs text-cyan-600 dark:text-cyan-400 uppercase tracking-widest font-bold">Videos & Talks</h3>
+                        <a href="https://youtu.be/mv73Qe2Ib48" target="_blank" class="flex flex-col sm:flex-row gap-5 p-4 rounded-2xl bg-white/90 dark:bg-zinc-900/80 border border-slate-300/80 dark:border-zinc-800 hover:border-cyan-500/60 transition group scroll-reveal spotlight-card">
+                            <img src="https://img.youtube.com/vi/mv73Qe2Ib48/hqdefault.jpg" alt="YouTube thumbnail for the podcast episode on quantum computing's speed advantage" class="w-full sm:w-64 aspect-video object-cover rounded-xl shrink-0" loading="lazy">
+                            <div class="flex flex-col justify-center min-w-0">
                                 <span class="font-mono text-xs text-slate-400 dark:text-zinc-500 block mb-2">[ YOUTUBE PODCAST ] ↗</span>
                                 <h4 class="text-lg font-bold text-slate-900 dark:text-white group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition mb-1">1000x Faster With Quantum? Why India Is Missing the Real Quantum Breakthrough</h4>
                                 <p class="text-slate-600 dark:text-zinc-400 text-sm">On quantum computing's speed advantages and why India may be lagging on breakthrough adoption.</p>
-                            </a>
-                        </div>
+                            </div>
+                        </a>
                     </div>
 
                     <div class="space-y-4">
                         <div class="flex items-baseline justify-between">
-                            <h3 class="font-mono text-xs text-cyan-600 dark:text-cyan-400 uppercase tracking-widest font-bold">03 // Articles & Memos</h3>
-                            <a href="https://audzzz12.substack.com" target="_blank" class="font-mono text-xs text-slate-500 dark:text-zinc-400 hover:text-cyan-600 dark:hover:text-cyan-400 transition">All posts on Substack ↗</a>
+                            <h3 class="font-mono text-xs text-cyan-600 dark:text-cyan-400 uppercase tracking-widest font-bold">Articles & Memos</h3>
+                            <a href="https://audzzz12.substack.com" target="_blank" class="glow-text font-mono text-xs text-slate-500 dark:text-zinc-400 hover:text-cyan-600 dark:hover:text-cyan-400 transition">All posts on Substack ↗</a>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <a href="https://audzzz12.substack.com/p/enterprise-pilot-to-product-what" target="_blank" class="block p-6 rounded-2xl bg-white/90 dark:bg-zinc-900/80 border border-slate-300/80 dark:border-zinc-800 hover:border-cyan-500/60 transition group">
+                            <a href="https://audzzz12.substack.com/p/enterprise-pilot-to-product-what" target="_blank" class="block p-6 rounded-2xl bg-white/90 dark:bg-zinc-900/80 border border-slate-300/80 dark:border-zinc-800 hover:border-cyan-500/60 transition group scroll-reveal spotlight-card">
                                 <span class="font-mono text-xs text-slate-400 dark:text-zinc-500 block mb-2">[ SUBSTACK ] ↗</span>
                                 <h4 class="text-lg font-bold text-slate-900 dark:text-white group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition mb-1">Enterprise Pilot to Product: What Actually Happens</h4>
                                 <p class="text-slate-600 dark:text-zinc-400 text-sm">Lessons from enterprise pilots and how they translate into a real product.</p>
                             </a>
-                            <a href="https://audzzz12.substack.com/p/speak-human-the-day-i-learned-to" target="_blank" class="block p-6 rounded-2xl bg-white/90 dark:bg-zinc-900/80 border border-slate-300/80 dark:border-zinc-800 hover:border-cyan-500/60 transition group">
+                            <a href="https://audzzz12.substack.com/p/speak-human-the-day-i-learned-to" target="_blank" class="block p-6 rounded-2xl bg-white/90 dark:bg-zinc-900/80 border border-slate-300/80 dark:border-zinc-800 hover:border-cyan-500/60 transition group scroll-reveal spotlight-card">
                                 <span class="font-mono text-xs text-slate-400 dark:text-zinc-500 block mb-2">[ SUBSTACK ] ↗</span>
                                 <h4 class="text-lg font-bold text-slate-900 dark:text-white group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition mb-1">Speak Human: The Day I Learned to Stop Pitching "Deeptech" to Aerospace</h4>
                                 <p class="text-slate-600 dark:text-zinc-400 text-sm">Selling simulation and modelling solvers into aerospace, and the procurement walls deeptech ventures hit.</p>
                             </a>
-                            <a href="https://audzzz12.substack.com/p/how-can-you-adopt-quantum-computing" target="_blank" class="block p-6 rounded-2xl bg-white/90 dark:bg-zinc-900/80 border border-slate-300/80 dark:border-zinc-800 hover:border-cyan-500/60 transition group">
+                            <a href="https://audzzz12.substack.com/p/how-can-you-adopt-quantum-computing" target="_blank" class="block p-6 rounded-2xl bg-white/90 dark:bg-zinc-900/80 border border-slate-300/80 dark:border-zinc-800 hover:border-cyan-500/60 transition group scroll-reveal spotlight-card">
                                 <span class="font-mono text-xs text-slate-400 dark:text-zinc-500 block mb-2">[ SUBSTACK ] ↗</span>
                                 <h4 class="text-lg font-bold text-slate-900 dark:text-white group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition mb-1">How Can You Adopt Quantum Computing</h4>
                                 <p class="text-slate-600 dark:text-zinc-400 text-sm">Quantum computing adoption, from historical algorithm development to modern computational complexity.</p>
                             </a>
-                            <a href="https://linkedin.com/in/audz12" target="_blank" class="block p-6 rounded-2xl bg-white/90 dark:bg-zinc-900/80 border border-slate-300/80 dark:border-zinc-800 hover:border-cyan-500/60 transition group">
+                            <a href="https://linkedin.com/in/audz12" target="_blank" class="block p-6 rounded-2xl bg-white/90 dark:bg-zinc-900/80 border border-slate-300/80 dark:border-zinc-800 hover:border-cyan-500/60 transition group scroll-reveal spotlight-card">
                                 <span class="font-mono text-xs text-slate-400 dark:text-zinc-500 block mb-2">[ LINKEDIN ARTICLE ] ↗</span>
                                 <h4 class="text-lg font-bold text-slate-900 dark:text-white group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition mb-1">Unlocking Global Partnerships in Hard Tech</h4>
                                 <p class="text-slate-600 dark:text-zinc-400 text-sm">How early-stage deep-tech startups can work alongside large system integrators.</p>
@@ -273,7 +433,7 @@
             </section>
 
             <!-- TAB 4: VIRTUAL COFFEE & QUESTIONNAIRE SCHEDULER -->
-            <section id="tab-coffee" class="hidden space-y-10 max-w-5xl mx-auto animate-fadeIn">
+            <section id="tab-coffee" class="hidden space-y-10 max-w-5xl mx-auto">
                 <div>
                     <span class="font-mono text-xs text-slate-500 dark:text-zinc-400 uppercase tracking-widest">// CAFFEINE_AND_CONVERSATION</span>
                     <h2 class="text-3xl font-extrabold text-slate-900 dark:text-white mt-1">☕ Virtual Coffee & Meeting Scheduler</h2>
@@ -281,8 +441,7 @@
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div onclick="selectTopic('Quantum Simulation Jam')" id="card-1" class="p-8 rounded-2xl bg-white/90 dark:bg-zinc-900/80 border-2 border-slate-300/80 dark:border-zinc-800 hover:border-cyan-500 cursor-pointer transition space-y-3 group shadow-sm">
-                        <span class="font-mono text-xs text-cyan-600 dark:text-cyan-400 font-bold uppercase tracking-wider">TOPIC // 01</span>
+                    <div onclick="selectTopic('Quantum Simulation Jam', event)" id="card-1" class="p-8 rounded-2xl bg-white/90 dark:bg-zinc-900/80 border-2 border-slate-300/80 dark:border-zinc-800 hover:border-cyan-500 cursor-pointer transition space-y-3 group shadow-sm spotlight-card">
                         <h3 class="text-xl font-bold text-slate-900 dark:text-white group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition">Quantum Simulation & Enterprise Adoption</h3>
                         <p class="text-slate-600 dark:text-zinc-300 text-sm leading-relaxed">
                             For engineering leaders and simulation experts diving into how quantum-inspired solvers tackle computational bottlenecks in aerodynamics and heavy engineering.
@@ -292,8 +451,7 @@
                         </div>
                     </div>
 
-                    <div onclick="selectTopic('Hard-Tech GTM Jam')" id="card-2" class="p-8 rounded-2xl bg-white/90 dark:bg-zinc-900/80 border-2 border-slate-300/80 dark:border-zinc-800 hover:border-cyan-500 cursor-pointer transition space-y-3 group shadow-sm">
-                        <span class="font-mono text-xs text-cyan-600 dark:text-cyan-400 font-bold uppercase tracking-wider">TOPIC // 02</span>
+                    <div onclick="selectTopic('Hard-Tech GTM Jam', event)" id="card-2" class="p-8 rounded-2xl bg-white/90 dark:bg-zinc-900/80 border-2 border-slate-300/80 dark:border-zinc-800 hover:border-cyan-500 cursor-pointer transition space-y-3 group shadow-sm spotlight-card">
                         <h3 class="text-xl font-bold text-slate-900 dark:text-white group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition">Hard-Tech GTM & Commercial Positioning</h3>
                         <p class="text-slate-600 dark:text-zinc-300 text-sm leading-relaxed">
                             For founders and sales leaders navigating why traditional SaaS playbooks fail in deep tech and how to build trust with conservative enterprise buyers.
@@ -303,8 +461,7 @@
                         </div>
                     </div>
 
-                    <div onclick="selectTopic('VCs & Frontier Tech Jam')" id="card-3" class="p-8 rounded-2xl bg-white/90 dark:bg-zinc-900/80 border-2 border-slate-300/80 dark:border-zinc-800 hover:border-cyan-500 cursor-pointer transition space-y-3 group shadow-sm">
-                        <span class="font-mono text-xs text-cyan-600 dark:text-cyan-400 font-bold uppercase tracking-wider">TOPIC // 03</span>
+                    <div onclick="selectTopic('VCs & Frontier Tech Jam', event)" id="card-3" class="p-8 rounded-2xl bg-white/90 dark:bg-zinc-900/80 border-2 border-slate-300/80 dark:border-zinc-800 hover:border-cyan-500 cursor-pointer transition space-y-3 group shadow-sm spotlight-card">
                         <h3 class="text-xl font-bold text-slate-900 dark:text-white group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition">VCs & Frontier Tech Investment Landscape</h3>
                         <p class="text-slate-600 dark:text-zinc-300 text-sm leading-relaxed">
                             For investors and analysts looking at the shift from consumer app wrappers to deep tech, quantum infrastructure, valuation realities, and venture milestones.
@@ -314,8 +471,7 @@
                         </div>
                     </div>
 
-                    <div onclick="selectTopic('Founder Therapy Jam')" id="card-4" class="p-8 rounded-2xl bg-white/90 dark:bg-zinc-900/80 border-2 border-slate-300/80 dark:border-zinc-800 hover:border-cyan-500 cursor-pointer transition space-y-3 group shadow-sm">
-                        <span class="font-mono text-xs text-cyan-600 dark:text-cyan-400 font-bold uppercase tracking-wider">TOPIC // 04</span>
+                    <div onclick="selectTopic('Founder Therapy Jam', event)" id="card-4" class="p-8 rounded-2xl bg-white/90 dark:bg-zinc-900/80 border-2 border-slate-300/80 dark:border-zinc-800 hover:border-cyan-500 cursor-pointer transition space-y-3 group shadow-sm spotlight-card">
                         <h3 class="text-xl font-bold text-slate-900 dark:text-white group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition">Founder Therapy & Startup Chaos</h3>
                         <p class="text-slate-600 dark:text-zinc-300 text-sm leading-relaxed">
                             No pitch decks. Just an unfiltered chat swapping war stories about early-stage fundraising, team alignment, managing operational burnout, and startup resilience.
@@ -340,39 +496,40 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div class="space-y-2">
                                 <label class="block font-mono text-xs text-slate-700 dark:text-zinc-300 uppercase">Your Full Name *</label>
-                                <input type="text" id="q-name" required placeholder="e.g. Sarah Jenkins" class="w-full px-4 py-3 rounded-xl bg-slate-100 dark:bg-black border border-slate-300 dark:border-zinc-800 text-slate-900 dark:text-white focus:outline-none focus:border-cyan-500 font-sans text-sm">
+                                <input type="text" id="q-name" required placeholder="e.g. Sarah Jenkins" class="w-full px-4 py-3 rounded-xl bg-slate-100 dark:bg-zinc-950 border border-slate-300 dark:border-zinc-800 text-slate-900 dark:text-white focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/40 font-sans text-sm">
                             </div>
                             <div class="space-y-2">
                                 <label class="block font-mono text-xs text-slate-700 dark:text-zinc-300 uppercase">Your Email Address *</label>
-                                <input type="email" id="q-email" required placeholder="e.g. sarah@company.com" class="w-full px-4 py-3 rounded-xl bg-slate-100 dark:bg-black border border-slate-300 dark:border-zinc-800 text-slate-900 dark:text-white focus:outline-none focus:border-cyan-500 font-sans text-sm">
+                                <input type="email" id="q-email" required placeholder="e.g. sarah@company.com" class="w-full px-4 py-3 rounded-xl bg-slate-100 dark:bg-zinc-950 border border-slate-300 dark:border-zinc-800 text-slate-900 dark:text-white focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/40 font-sans text-sm">
                             </div>
                         </div>
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div class="space-y-2">
                                 <label class="block font-mono text-xs text-slate-700 dark:text-zinc-300 uppercase">Organization / Company *</label>
-                                <input type="text" id="q-org" required placeholder="e.g. Lockheed Martin / Venture Firm" class="w-full px-4 py-3 rounded-xl bg-slate-100 dark:bg-black border border-slate-300 dark:border-zinc-800 text-slate-900 dark:text-white focus:outline-none focus:border-cyan-500 font-sans text-sm">
+                                <input type="text" id="q-org" required placeholder="e.g. Lockheed Martin / Venture Firm" class="w-full px-4 py-3 rounded-xl bg-slate-100 dark:bg-zinc-950 border border-slate-300 dark:border-zinc-800 text-slate-900 dark:text-white focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/40 font-sans text-sm">
                             </div>
                             <div class="space-y-2">
                                 <label class="block font-mono text-xs text-slate-700 dark:text-zinc-300 uppercase">Your Role / Background *</label>
-                                <input type="text" id="q-role" required placeholder="e.g. Engineering Director / VC Partner" class="w-full px-4 py-3 rounded-xl bg-slate-100 dark:bg-black border border-slate-300 dark:border-zinc-800 text-slate-900 dark:text-white focus:outline-none focus:border-cyan-500 font-sans text-sm">
+                                <input type="text" id="q-role" required placeholder="e.g. Engineering Director / VC Partner" class="w-full px-4 py-3 rounded-xl bg-slate-100 dark:bg-zinc-950 border border-slate-300 dark:border-zinc-800 text-slate-900 dark:text-white focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/40 font-sans text-sm">
                             </div>
                         </div>
 
                         <div class="space-y-2">
                             <label class="block font-mono text-xs text-slate-700 dark:text-zinc-300 uppercase">What specific challenge or question would you like to discuss? *</label>
-                            <textarea id="q-notes" rows="4" required placeholder="Share brief context so we can dive straight in..." class="w-full px-4 py-3 rounded-xl bg-slate-100 dark:bg-black border border-slate-300 dark:border-zinc-800 text-slate-900 dark:text-white focus:outline-none focus:border-cyan-500 font-sans text-sm"></textarea>
+                            <textarea id="q-notes" rows="4" required placeholder="Share brief context so we can dive straight in..." class="w-full px-4 py-3 rounded-xl bg-slate-100 dark:bg-zinc-950 border border-slate-300 dark:border-zinc-800 text-slate-900 dark:text-white focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/40 font-sans text-sm"></textarea>
                         </div>
 
-                        <button type="submit" id="submit-btn" class="w-full py-4 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-mono text-xs font-bold uppercase tracking-wider rounded-xl transition shadow-lg flex justify-center items-center gap-2">
+                        <button type="submit" id="submit-btn" class="w-full py-4 bg-cyan-500 hover:bg-cyan-400 active:scale-[0.98] text-slate-950 font-mono text-xs font-bold uppercase tracking-wider rounded-xl transition shadow-lg flex justify-center items-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed disabled:active:scale-100">
                             <span>Save Answers & Proceed to Calendar Booking</span>
                             <span>&rarr;</span>
                         </button>
+                        <p id="submit-error" class="hidden text-sm text-rose-600 dark:text-rose-400 font-mono" role="alert"></p>
                     </form>
                 </div>
 
                 <!-- Calendar Schedule Widget -->
-                <div id="calendar-container" class="hidden p-8 md:p-10 rounded-3xl bg-white/90 dark:bg-zinc-900 border border-cyan-500/85 shadow-2xl space-y-6 animate-fadeIn">
+                <div id="calendar-container" class="hidden p-8 md:p-10 rounded-3xl bg-white/90 dark:bg-zinc-900 border border-cyan-500/85 shadow-2xl space-y-6">
                     <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-2 border-b border-slate-200 dark:border-zinc-800 pb-4">
                         <div>
                             <span class="font-mono text-xs text-cyan-600 dark:text-cyan-400 uppercase tracking-widest">// STEP_02 // CALENDAR_SCHEDULING</span>
@@ -381,10 +538,10 @@
                         <span class="font-mono text-xs px-3 py-1 bg-cyan-500/10 text-cyan-600 dark:text-cyan-400 border border-cyan-500/30 rounded-lg">✓ Questionnaire Saved</span>
                     </div>
                     <p class="text-sm text-slate-600 dark:text-zinc-300">
-                        Thanks! Click below to open Google Calendar with this meeting pre-filled (topic, your notes, and both our emails as guests) — just pick a time and send the invite.
+                        Thanks! Click below to open Google Calendar with this meeting pre-filled (topic, your notes, and both our emails as guests). Just pick a time and send the invite.
                     </p>
-                    <div class="w-full rounded-2xl border border-slate-200 dark:border-zinc-800 bg-slate-50 dark:bg-black p-8 flex justify-center">
-                        <a id="calendar-link" href="#" target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-6 py-4 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-mono text-xs font-bold uppercase tracking-wider rounded-xl transition shadow-lg">
+                    <div class="w-full rounded-2xl border border-slate-200 dark:border-zinc-800 bg-slate-50 dark:bg-zinc-950 p-8 flex justify-center">
+                        <a id="calendar-link" href="#" target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-6 py-4 bg-cyan-500 hover:bg-cyan-400 active:scale-[0.98] text-slate-950 font-mono text-xs font-bold uppercase tracking-wider rounded-xl transition shadow-lg">
                             <span>Open Google Calendar & Pick a Time</span>
                             <span>&rarr;</span>
                         </a>
@@ -396,14 +553,27 @@
     </div>
 
     <!-- Footer -->
-    <footer class="w-full border-t border-slate-200/60 dark:border-zinc-800/80 bg-white/70 dark:bg-black/80 backdrop-blur-xl py-6 text-center font-mono text-xs text-slate-500 dark:text-zinc-400 transition-colors duration-300 space-y-2">
-        <p>Direct Inquiries: <a href="mailto:singh.aditya0395@gmail.com" class="text-cyan-600 dark:text-cyan-400 underline">singh.aditya0395@gmail.com</a></p>
+    <footer class="w-full border-t border-slate-200/60 dark:border-zinc-800/80 bg-white/70 dark:bg-zinc-950/80 backdrop-blur-xl py-6 text-center font-mono text-xs text-slate-500 dark:text-zinc-400 transition-colors duration-300 space-y-2">
+        <p>Direct Inquiries: <a href="mailto:singh.aditya0395@gmail.com" class="glow-text text-cyan-600 dark:text-cyan-400 underline">singh.aditya0395@gmail.com</a></p>
         <p>&copy; 2026 Aditya Singh. All rights reserved.</p>
+
+        <details class="max-w-lg mx-auto pt-1 text-left group/policy">
+            <summary class="glow-text cursor-pointer text-center list-none underline hover:text-cyan-600 dark:hover:text-cyan-400 transition">Privacy Policy</summary>
+            <div class="pt-3 space-y-3 leading-relaxed normal-case font-sans text-slate-600 dark:text-zinc-400">
+                <p><strong class="text-slate-700 dark:text-zinc-300">What's collected.</strong> The only data this site gathers is what you type into the Virtual Coffee questionnaire: name, email, organization, role, discussion topic, and notes. There are no accounts, no cookies, and no analytics or ad trackers running here.</p>
+                <p><strong class="text-slate-700 dark:text-zinc-300">How it's used.</strong> Submitting the form emails your answers straight to Aditya's inbox so he can prepare for the conversation, plus a best-effort backup log kept on the server. It's used only for that purpose, never sold, rented, or shared with third parties, and never used for marketing.</p>
+                <p><strong class="text-slate-700 dark:text-zinc-300">Outbound links.</strong> Links to LinkedIn, YouTube, Substack, and BosonQ Psi take you off this site to services with their own privacy policies.</p>
+                <p><strong class="text-slate-700 dark:text-zinc-300">Your data, your call.</strong> Email <a href="mailto:singh.aditya0395@gmail.com" class="text-cyan-600 dark:text-cyan-400 underline">singh.aditya0395@gmail.com</a> anytime to see, correct, or delete what you submitted.</p>
+            </div>
+        </details>
     </footer>
 
     <!-- Scripts -->
-    <script>
+    <script type="module">
+        import { animate, stagger } from "https://cdn.jsdelivr.net/npm/motion@13.1.1/+esm";
+
         const MY_EMAIL = 'singh.aditya0395@gmail.com';
+        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
         // Backend base URL. Local dev hits the FastAPI dev server on port 8000.
         // In production (Vercel), the API is deployed as a same-origin serverless
@@ -424,9 +594,10 @@
         }
 
         const phrases = [
-            "Building quantum-inspired math engines.",
-            "Solving heavy enterprise compute bottlenecks.",
-            "Scaling deep tech without the fluff."
+            "Building the physics acceleration layer.",
+            "Cross-section of AI x Quantum Algorithms.",
+            "Quantum-inspired and quantum-native.",
+            "Making HPC more powerful and everyone quantum-ready."
         ];
         let currentPhrase = 0;
         let charIndex = 0;
@@ -435,8 +606,12 @@
 
         function typeWriter() {
             if (!typewriterElement) return;
+            if (reduceMotion) {
+                typewriterElement.textContent = phrases[0];
+                return;
+            }
             const current = phrases[currentPhrase];
-            
+
             if (isDeleting) {
                 typewriterElement.textContent = current.substring(0, charIndex - 1);
                 charIndex--;
@@ -459,33 +634,183 @@
             setTimeout(typeWriter, speed);
         }
 
+        // Headline types out once on load, then the cursor stops (unlike the looping
+        // subtitle typewriter above it, which keeps blinking).
+        const HEADLINE_TEXT = "Hey, I'm Aditya.";
+        const headlineElement = document.getElementById('headline-text');
+
+        function typeHeadline() {
+            if (!headlineElement) return;
+            if (reduceMotion) {
+                headlineElement.textContent = HEADLINE_TEXT;
+                headlineElement.classList.remove('typewriter-cursor');
+                return;
+            }
+            let i = 0;
+            (function step() {
+                headlineElement.textContent = HEADLINE_TEXT.substring(0, i);
+                i++;
+                if (i <= HEADLINE_TEXT.length) {
+                    setTimeout(step, 65);
+                } else {
+                    headlineElement.classList.remove('typewriter-cursor');
+                }
+            })();
+        }
+
+        // Magnetic buttons: the primary CTAs nudge toward the cursor within a small radius.
+        function initMagnetic(el, strength = 0.25, max = 8) {
+            let tx = 0, ty = 0, pressed = false;
+            function apply() {
+                el.style.transform = `translate(${tx}px, ${ty}px) scale(${pressed ? 0.97 : 1})`;
+            }
+            el.addEventListener('mousemove', (e) => {
+                const rect = el.getBoundingClientRect();
+                tx = Math.max(-max, Math.min(max, (e.clientX - rect.left - rect.width / 2) * strength));
+                ty = Math.max(-max, Math.min(max, (e.clientY - rect.top - rect.height / 2) * strength));
+                apply();
+            });
+            el.addEventListener('mousedown', () => { pressed = true; apply(); });
+            el.addEventListener('mouseup', () => { pressed = false; apply(); });
+            el.addEventListener('mouseleave', () => {
+                pressed = false; tx = 0; ty = 0;
+                animate(el, { transform: 'translate(0px, 0px) scale(1)' }, { duration: 0.4, easing: [0.16, 1, 0.3, 1] });
+            });
+        }
+
+        // Background glow color: lets visitors recolor the hero glow/beam/stars. Persisted
+        // per-browser via localStorage so the choice sticks across visits.
+        const GLOW_COLOR_KEY = 'glowColor';
+
+        function hexToRgb(hex) {
+            const n = parseInt(hex.replace('#', ''), 16);
+            return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+        }
+
+        function applyGlowColor(hex) {
+            const [r, g, b] = hexToRgb(hex);
+            document.documentElement.style.setProperty('--glow-r', r);
+            document.documentElement.style.setProperty('--glow-g', g);
+            document.documentElement.style.setProperty('--glow-b', b);
+            const swatch = document.getElementById('glow-color-swatch');
+            if (swatch) swatch.style.background = hex;
+        }
+
+        function initGlowColorPicker() {
+            const picker = document.getElementById('glow-color-picker');
+            if (!picker) return;
+
+            const saved = localStorage.getItem(GLOW_COLOR_KEY);
+            if (saved) {
+                picker.value = saved;
+                applyGlowColor(saved);
+            }
+
+            picker.addEventListener('input', () => {
+                applyGlowColor(picker.value);
+                localStorage.setItem(GLOW_COLOR_KEY, picker.value);
+            });
+        }
+
         window.addEventListener('DOMContentLoaded', () => {
+            typeHeadline();
             typeWriter();
+            initGlowColorPicker();
+            if (!reduceMotion) {
+                document.querySelectorAll('.magnetic').forEach(el => initMagnetic(el));
+            }
         });
 
-        function switchTab(tabName) {
-            document.getElementById('tab-home').classList.add('hidden');
-            document.getElementById('tab-about').classList.add('hidden');
-            document.getElementById('tab-blog').classList.add('hidden');
-            document.getElementById('tab-coffee').classList.add('hidden');
+        // Per-tab child selectors for the entrance stagger in revealTabContent().
+        // 'about' and 'blog' are handled by scroll-reveal (IntersectionObserver) instead,
+        // since their content runs past the fold.
+        const TAB_REVEAL_SELECTORS = {
+            home: ':scope > div',
+            coffee: '[id^="card-"]'
+        };
+
+        function revealTabContent(tabName) {
+            if (reduceMotion || !TAB_REVEAL_SELECTORS[tabName]) return;
+            const section = document.getElementById('tab-' + tabName);
+            const items = section.querySelectorAll(TAB_REVEAL_SELECTORS[tabName]);
+            if (!items.length) return;
+            animate(items, { opacity: [0, 1], y: [16, 0] }, { duration: 0.4, delay: stagger(0.06), easing: 'ease-out' });
+        }
+
+        // Scroll reveal for the About timeline and Blog cards: fades each item in once,
+        // the first time it scrolls into view.
+        const scrollRevealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    scrollRevealObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+        function observeScrollReveals(tabName) {
+            if (tabName !== 'about' && tabName !== 'blog') return;
+            document.querySelectorAll('#tab-' + tabName + ' .scroll-reveal:not(.is-visible)').forEach(el => {
+                scrollRevealObserver.observe(el);
+            });
+        }
+
+        // Timeline progress counter: "01 / 04" style readout that tracks whichever career
+        // milestone is currently in view, inspired by waybill.to's chapter counter.
+        const timelineCounterEl = document.getElementById('timeline-progress-counter');
+        const timelineEntries = document.querySelectorAll('#tab-about [data-index]');
+        const timelineTotal = timelineEntries.length;
+
+        const timelineCounterObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const idx = entry.target.dataset.index.padStart(2, '0');
+                    timelineCounterEl.textContent = `${idx} / ${String(timelineTotal).padStart(2, '0')}`;
+                }
+            });
+        }, { threshold: 0.4, rootMargin: '-96px 0px -35% 0px' });
+
+        if (timelineCounterEl && timelineTotal) {
+            timelineCounterEl.textContent = `01 / ${String(timelineTotal).padStart(2, '0')}`;
+            timelineEntries.forEach(el => timelineCounterObserver.observe(el));
+        }
+
+        async function switchTab(tabName) {
+            const current = document.querySelector('main > section:not(.hidden)');
+            const next = document.getElementById('tab-' + tabName);
+
+            if (current && current !== next && !reduceMotion) {
+                await animate(current, { opacity: [1, 0], y: [0, -8] }, { duration: 0.15, easing: 'ease-in' }).finished;
+            }
+
+            ['tab-home', 'tab-about', 'tab-blog', 'tab-coffee'].forEach(id => {
+                document.getElementById(id).classList.add('hidden');
+            });
 
             const buttons = ['btn-home', 'btn-about', 'btn-blog', 'btn-coffee'];
             const isDark = document.getElementById('body-element').classList.contains('dark-mode');
 
             buttons.forEach(id => {
                 const btn = document.getElementById(id);
-                btn.className = isDark 
+                btn.className = isDark
                     ? "px-4 py-2 rounded-lg font-medium transition text-zinc-300 hover:text-white"
                     : "px-4 py-2 rounded-lg font-medium transition text-slate-700 hover:text-slate-900";
             });
 
-            document.getElementById('tab-' + tabName).classList.remove('hidden');
+            next.classList.remove('hidden');
             const activeBtn = document.getElementById('btn-' + tabName);
-            activeBtn.className = isDark 
+            activeBtn.className = isDark
                 ? "px-4 py-2 rounded-lg font-medium transition bg-zinc-100 text-zinc-900 shadow-xs"
                 : "px-4 py-2 rounded-lg font-medium transition bg-slate-900 text-white shadow-xs";
 
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
+
+            if (!reduceMotion) {
+                animate(next, { opacity: [0, 1], y: [8, 0] }, { duration: 0.3, easing: 'ease-out' });
+                revealTabContent(tabName);
+            }
+
+            observeScrollReveals(tabName);
         }
 
         function toggleTheme() {
@@ -511,26 +836,53 @@
 
         let selectedTopicName = "Quantum Simulation Jam";
 
-        function selectTopic(topicName) {
+        function selectTopic(topicName, evt) {
             selectedTopicName = topicName;
-            document.getElementById('active-coffee-label').textContent = topicName;
-            
+            const label = document.getElementById('active-coffee-label');
+            if (reduceMotion) {
+                label.textContent = topicName;
+            } else {
+                animate(label, { opacity: [1, 0] }, { duration: 0.12 }).finished.then(() => {
+                    label.textContent = topicName;
+                    animate(label, { opacity: [0, 1] }, { duration: 0.25 });
+                });
+            }
+
             for(let i=1; i<=4; i++) {
                 const card = document.getElementById('card-' + i);
                 card.classList.remove('border-cyan-500');
                 card.classList.add('border-slate-300/80', 'dark:border-zinc-800');
             }
-            event.currentTarget.classList.remove('border-slate-300/80', 'dark:border-zinc-800');
-            event.currentTarget.classList.add('border-cyan-500');
+            const card = evt.currentTarget;
+            card.classList.remove('border-slate-300/80', 'dark:border-zinc-800');
+            card.classList.add('border-cyan-500');
+            if (!reduceMotion) {
+                animate(card, { scale: [1, 1.03, 1] }, { duration: 0.3, easing: 'ease-out' });
+            }
 
-            document.getElementById('questionnaire-card').scrollIntoView({ behavior: 'smooth' });
+            document.getElementById('questionnaire-card').scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth' });
+        }
+
+        function revealCalendar(questionnaireCard, calendarContainer) {
+            questionnaireCard.style.pointerEvents = 'none';
+            calendarContainer.classList.remove('hidden');
+            if (reduceMotion) {
+                questionnaireCard.style.opacity = '0.5';
+                calendarContainer.scrollIntoView({ behavior: 'auto' });
+                return;
+            }
+            animate(questionnaireCard, { opacity: [1, 0.5] }, { duration: 0.3 });
+            animate(calendarContainer, { opacity: [0, 1], y: [16, 0] }, { duration: 0.4, easing: 'ease-out' });
+            calendarContainer.scrollIntoView({ behavior: 'smooth' });
         }
 
         async function submitQuestionnaire(event) {
             event.preventDefault();
             
             const submitBtn = document.getElementById('submit-btn');
-            submitBtn.textContent = "Processing via API...";
+            const errorEl = document.getElementById('submit-error');
+            errorEl.classList.add('hidden');
+            submitBtn.innerHTML = '<span class="orbit-loader"><span></span><span></span></span><span>Processing...</span>';
             submitBtn.disabled = true;
 
             const payload = {
@@ -543,6 +895,9 @@
             };
 
             document.getElementById('calendar-link').href = buildCalendarLink(payload);
+
+            const questionnaireCard = document.getElementById('questionnaire-card');
+            const calendarContainer = document.getElementById('calendar-container');
 
             try {
                 // Connects to Python FastAPI Backend (emails the submission to me).
@@ -558,16 +913,10 @@
                 const result = await response.json();
 
                 if (response.ok) {
-                    const questionnaireCard = document.getElementById('questionnaire-card');
-                    const calendarContainer = document.getElementById('calendar-container');
-
-                    questionnaireCard.style.opacity = '0.5';
-                    questionnaireCard.style.pointerEvents = 'none';
-
-                    calendarContainer.classList.remove('hidden');
-                    calendarContainer.scrollIntoView({ behavior: 'smooth' });
+                    revealCalendar(questionnaireCard, calendarContainer);
                 } else {
-                    alert("Error submitting questionnaire. Please check your inputs.");
+                    errorEl.textContent = "Couldn't submit the questionnaire. Please check your inputs and try again.";
+                    errorEl.classList.remove('hidden');
                     submitBtn.textContent = "Save Answers & Proceed to Calendar Booking →";
                     submitBtn.disabled = false;
                 }
@@ -575,13 +924,13 @@
                 console.error("API Connection Error:", error);
                 // Fallback graceful progression if backend server isn't spun up yet.
                 // The calendar link above still works since it needs no backend.
-                const questionnaireCard = document.getElementById('questionnaire-card');
-                const calendarContainer = document.getElementById('calendar-container');
-                questionnaireCard.style.opacity = '0.5';
-                calendarContainer.classList.remove('hidden');
-                calendarContainer.scrollIntoView({ behavior: 'smooth' });
+                revealCalendar(questionnaireCard, calendarContainer);
             }
         }
+
+        // Exposed for the inline onclick handlers in the markup above — module
+        // scope isn't global scope, so these need explicit window attachment.
+        Object.assign(window, { switchTab, toggleTheme, selectTopic, submitQuestionnaire });
     </script>
 </body>
 </html>

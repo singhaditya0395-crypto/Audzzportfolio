@@ -18,3 +18,5 @@ Audz portfolio/Backend/data/
 
 # graphify
 graphify-out/
+.vercel
+.env*
