@@ -6,6 +6,7 @@ import re
 import secrets
 import smtplib
 import urllib.error
+import urllib.parse
 import urllib.request
 import uuid
 from datetime import datetime, timezone
@@ -75,6 +76,16 @@ if DATA_ENCRYPTION_KEY:
 # silently falls back to writing plaintext.
 SUBMISSIONS_ENABLED = bool(UPSTASH_REDIS_REST_URL and UPSTASH_REDIS_REST_TOKEN and _fernet)
 
+# Cloudflare Turnstile (invisible/managed CAPTCHA, no third-party tracking).
+# SITE_KEY is public by design - Turnstile's own widget script needs it
+# client-side, so it's handed out via /api/contact rather than hidden. Only
+# SECRET_KEY (used server-side to verify a solved challenge) is sensitive.
+# Complements, doesn't replace, the existing honeypot. If unset, verification
+# fails open (submissions are accepted without it) - same pattern as the rest
+# of this file's optional features.
+TURNSTILE_SITE_KEY = os.getenv("TURNSTILE_SITE_KEY")
+TURNSTILE_SECRET_KEY = os.getenv("TURNSTILE_SECRET_KEY")
+
 app = FastAPI(title="Aditya Singh Portfolio API", version="1.0.0")
 
 app.add_middleware(
@@ -87,15 +98,22 @@ app.add_middleware(
 
 
 _CONTROL_CHARS = re.compile(r"[\r\n\x00-\x08\x0b\x0c\x0e-\x1f]")
+# Defense-in-depth against stored XSS: nothing in this codebase currently
+# renders user input as HTML (checked - only textContent/plaintext-email/JSON
+# ever touch these values), so this isn't closing a live hole today. It's here
+# so a future feature that DOES render this data as HTML doesn't reopen one.
+_DANGEROUS_PATTERN = re.compile(
+    r"<\s*script|<\s*iframe|javascript:|data:text/html|on\w+\s*=", re.IGNORECASE
+)
 
 
 class MeetingRequest(BaseModel):
     topic: str = Field(..., min_length=1, max_length=120)
-    name: str = Field(..., min_length=1, max_length=120)
+    name: str = Field(..., min_length=1, max_length=100)
     email: EmailStr
-    organization: str = Field(..., min_length=1, max_length=100)
-    role: str = Field(..., min_length=1, max_length=150)
-    notes: str = Field(..., min_length=1, max_length=4000)
+    organization: str = Field(..., min_length=1, max_length=150)
+    role: str = Field(..., min_length=1, max_length=100)
+    notes: str = Field(..., min_length=1, max_length=2000)
     consent: bool = Field(...)
     # IANA zone name (e.g. "America/New_York"), detected client-side via the
     # native Intl API. Optional and informational only - included in the email
@@ -105,6 +123,8 @@ class MeetingRequest(BaseModel):
     # frontend, not display:none — bots specifically check for and skip that).
     # Bots that auto-fill every form field trip it; humans never do.
     website: str = Field("", max_length=200)
+    # Cloudflare Turnstile's solved-challenge token, verified server-side below.
+    turnstile_token: str = Field("", max_length=2048)
 
     @field_validator("topic", "name", "organization", "role", "notes")
     @classmethod
@@ -114,6 +134,18 @@ class MeetingRequest(BaseModel):
             raise ValueError("This field can't be empty.")
         if _CONTROL_CHARS.search(value):
             raise ValueError("This field contains characters that aren't allowed.")
+        if _DANGEROUS_PATTERN.search(value):
+            raise ValueError("This field contains content that isn't allowed.")
+        return value
+
+    @field_validator("name")
+    @classmethod
+    def name_characters_only(cls, value: str) -> str:
+        # str.isalpha() is Unicode-aware, so "José" and "Nguyễn" pass same as
+        # "Sarah". Apostrophe is allowed beyond the literal "spaces, hyphens"
+        # spec, since rejecting it would break very common real names (O'Brien).
+        if not all(ch.isalpha() or ch in " '-" for ch in value):
+            raise ValueError("Name can only contain letters, spaces, and hyphens.")
         return value
 
     @field_validator("timezone")
@@ -198,6 +230,35 @@ def check_rate_limit(client_ip: str) -> bool:
     try:
         return result[0]["result"] <= RATE_LIMIT_PER_HOUR
     except (KeyError, IndexError, TypeError):
+        return True
+
+
+def verify_turnstile(token: str, client_ip: str) -> bool:
+    """True if the solved challenge is valid. Fails open (allows the request)
+    when TURNSTILE_SECRET_KEY isn't configured, matching every other optional
+    feature in this file - so the form works before Turnstile is set up, and
+    starts actually gating on it the moment a secret key is added."""
+    if not TURNSTILE_SECRET_KEY:
+        return True
+    if not token:
+        return False
+    try:
+        body = urllib.parse.urlencode({
+            "secret": TURNSTILE_SECRET_KEY,
+            "response": token,
+            "remoteip": client_ip,
+        }).encode()
+        req = urllib.request.Request(
+            "https://challenges.cloudflare.com/turnstile/v0/siteverify",
+            data=body,
+            method="POST",
+        )
+        with urllib.request.urlopen(req, timeout=5) as resp:
+            result = json.loads(resp.read())
+        return bool(result.get("success"))
+    except (urllib.error.URLError, TimeoutError, ValueError) as exc:
+        print(f"[Turnstile] Verification request failed: {exc}")
+        # Network hiccup talking to Cloudflare shouldn't lock out real visitors.
         return True
 
 
@@ -326,8 +387,10 @@ def health_check():
 @app.get("/api/contact")
 def get_contact():
     # Lets the frontend build a "add me as a guest" calendar invite without ever
-    # hardcoding the address in the page source.
-    return {"email": NOTIFY_EMAIL}
+    # hardcoding the address in the page source. turnstile_site_key is null
+    # until TURNSTILE_SITE_KEY is configured - the frontend skips rendering
+    # the widget entirely in that case (site keys are meant to be public).
+    return {"email": NOTIFY_EMAIL, "turnstile_site_key": TURNSTILE_SITE_KEY}
 
 
 @app.post("/api/meetings")
@@ -340,6 +403,9 @@ def create_meeting(data: MeetingRequest, request: Request):
     client_ip = get_client_ip(request)
     if not check_rate_limit(client_ip):
         raise HTTPException(status_code=429, detail="Too many requests. Please try again in a bit.")
+
+    if not verify_turnstile(data.turnstile_token, client_ip):
+        raise HTTPException(status_code=403, detail="Verification failed. Please try again.")
 
     if data.website:
         # Honeypot tripped: a bot filled in a field real visitors never see.

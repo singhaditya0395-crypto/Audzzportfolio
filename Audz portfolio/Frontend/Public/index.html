@@ -5,28 +5,34 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aditya Singh | Deep-Tech Operator</title>
     <meta name="description" content="Aditya Singh - Founding Member & VP at BosonQ Psi, building quantum-inspired simulation for heavy industry. Deep-tech operator, ex-TCS and ZS Associates.">
+    <link rel="canonical" href="https://audzzportfolio.vercel.app/">
     <meta property="og:title" content="Aditya Singh | Deep-Tech Operator">
     <meta property="og:description" content="Founding Member & VP at BosonQ Psi, building quantum-inspired simulation for heavy industry.">
     <meta property="og:type" content="website">
-    <meta name="twitter:card" content="summary">
+    <meta property="og:url" content="https://audzzportfolio.vercel.app/">
+    <meta property="og:site_name" content="Aditya Singh">
+    <meta property="og:image" content="https://audzzportfolio.vercel.app/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Aditya Singh - Founding Member & VP at BosonQ Psi">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://audzzportfolio.vercel.app/og-image.png">
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2309090b'/%3E%3Ctext x='32' y='45' font-family='monospace' font-size='34' font-weight='700' fill='%2322d3ee' text-anchor='middle'%3EA%3C/text%3E%3C/svg%3E">
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Precompiled via Tailwind CLI (matches the site's exact utility usage),
+         not the cdn.tailwindcss.com Play CDN. Measured via Lighthouse: the CDN
+         script was a 126KB render-blocking JS payload that had to download AND
+         execute (compiling Tailwind's JIT engine at runtime) before the page
+         could paint anything - a static stylesheet has neither cost. -->
+    <link rel="stylesheet" href="tailwind.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Both families ship as a single variable-weight woff2 each (confirmed via
+         the actual Google Fonts CSS response), so preloading just these two
+         files covers every weight used site-wide. Measured via Lighthouse: this
+         is what was causing the swapped-in-font layout shift (CLS 0.16). -->
+    <link rel="preload" as="font" type="font/woff2" crossorigin href="https://fonts.gstatic.com/s/dmsans/v17/rP2Hp2ywxg089UriCZOIHTWEBlw.woff2">
+    <link rel="preload" as="font" type="font/woff2" crossorigin href="https://fonts.gstatic.com/s/robotomono/v31/L0x5DF4xlVMF-BfR8bXMIjhLq3-cXbKD.woff2">
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Roboto+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['"DM Sans"', 'sans-serif'],
-                        mono: ['"Roboto Mono"', 'monospace'],
-                    },
-                }
-            }
-        }
-    </script>
     <style>
         body.light-mode {
             background-color: #F8FAFC;
@@ -171,6 +177,33 @@
             .hero-glow, .hero-glow-b, .hero-beam, .cta-glow { animation: none; }
         }
     </style>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Aditya Singh",
+        "url": "https://audzzportfolio.vercel.app/",
+        "image": "https://audzzportfolio.vercel.app/og-image.png",
+        "jobTitle": "Founding Member & VP",
+        "worksFor": {
+            "@type": "Organization",
+            "name": "BosonQ Psi"
+        },
+        "alumniOf": {
+            "@type": "CollegeOrUniversity",
+            "name": "BIT Durg"
+        },
+        "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Bengaluru",
+            "addressCountry": "IN"
+        },
+        "sameAs": [
+            "https://linkedin.com/in/audz12",
+            "https://audzzz12.substack.com"
+        ]
+    }
+    </script>
 </head>
 <body class="dark-mode font-sans antialiased selection:bg-cyan-500 selection:text-white min-h-screen flex flex-col justify-between transition-colors duration-300" id="body-element">
 
@@ -504,7 +537,7 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div class="space-y-2">
                                 <label class="block font-mono text-xs text-slate-700 dark:text-zinc-300 uppercase">Your Full Name *</label>
-                                <input type="text" id="q-name" required maxlength="120" aria-describedby="q-name-error" placeholder="e.g. Sarah Jenkins" class="w-full px-4 py-3 rounded-xl bg-slate-100 dark:bg-zinc-950 border border-slate-300 dark:border-zinc-800 text-slate-900 dark:text-white focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/40 font-sans text-sm">
+                                <input type="text" id="q-name" required maxlength="100" aria-describedby="q-name-error" placeholder="e.g. Sarah Jenkins" class="w-full px-4 py-3 rounded-xl bg-slate-100 dark:bg-zinc-950 border border-slate-300 dark:border-zinc-800 text-slate-900 dark:text-white focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/40 font-sans text-sm">
                                 <p id="q-name-error" class="hidden text-xs text-rose-600 dark:text-rose-400"></p>
                             </div>
                             <div class="space-y-2">
@@ -517,19 +550,19 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div class="space-y-2">
                                 <label class="block font-mono text-xs text-slate-700 dark:text-zinc-300 uppercase">Organization / Company *</label>
-                                <input type="text" id="q-org" required maxlength="100" aria-describedby="q-org-error" placeholder="e.g. Lockheed Martin / Venture Firm" class="w-full px-4 py-3 rounded-xl bg-slate-100 dark:bg-zinc-950 border border-slate-300 dark:border-zinc-800 text-slate-900 dark:text-white focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/40 font-sans text-sm">
+                                <input type="text" id="q-org" required maxlength="150" aria-describedby="q-org-error" placeholder="e.g. Lockheed Martin / Venture Firm" class="w-full px-4 py-3 rounded-xl bg-slate-100 dark:bg-zinc-950 border border-slate-300 dark:border-zinc-800 text-slate-900 dark:text-white focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/40 font-sans text-sm">
                                 <p id="q-org-error" class="hidden text-xs text-rose-600 dark:text-rose-400"></p>
                             </div>
                             <div class="space-y-2">
                                 <label class="block font-mono text-xs text-slate-700 dark:text-zinc-300 uppercase">Your Role / Background *</label>
-                                <input type="text" id="q-role" required maxlength="150" aria-describedby="q-role-error" placeholder="e.g. Engineering Director / VC Partner" class="w-full px-4 py-3 rounded-xl bg-slate-100 dark:bg-zinc-950 border border-slate-300 dark:border-zinc-800 text-slate-900 dark:text-white focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/40 font-sans text-sm">
+                                <input type="text" id="q-role" required maxlength="100" aria-describedby="q-role-error" placeholder="e.g. Engineering Director / VC Partner" class="w-full px-4 py-3 rounded-xl bg-slate-100 dark:bg-zinc-950 border border-slate-300 dark:border-zinc-800 text-slate-900 dark:text-white focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/40 font-sans text-sm">
                                 <p id="q-role-error" class="hidden text-xs text-rose-600 dark:text-rose-400"></p>
                             </div>
                         </div>
 
                         <div class="space-y-2">
                             <label class="block font-mono text-xs text-slate-700 dark:text-zinc-300 uppercase">What specific challenge or question would you like to discuss? *</label>
-                            <textarea id="q-notes" rows="4" required maxlength="4000" aria-describedby="q-notes-error" placeholder="Share brief context so we can dive straight in..." class="w-full px-4 py-3 rounded-xl bg-slate-100 dark:bg-zinc-950 border border-slate-300 dark:border-zinc-800 text-slate-900 dark:text-white focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/40 font-sans text-sm"></textarea>
+                            <textarea id="q-notes" rows="4" required maxlength="2000" aria-describedby="q-notes-error" placeholder="Share brief context so we can dive straight in..." class="w-full px-4 py-3 rounded-xl bg-slate-100 dark:bg-zinc-950 border border-slate-300 dark:border-zinc-800 text-slate-900 dark:text-white focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/40 font-sans text-sm"></textarea>
                             <p id="q-notes-error" class="hidden text-xs text-rose-600 dark:text-rose-400"></p>
                         </div>
 
@@ -540,6 +573,8 @@
                             </label>
                             <p id="q-consent-error" class="hidden text-xs text-rose-600 dark:text-rose-400"></p>
                         </div>
+
+                        <div id="turnstile-widget" class="hidden"></div>
 
                         <button type="submit" id="submit-btn" class="w-full py-4 bg-cyan-500 hover:bg-cyan-400 active:scale-[0.98] text-slate-950 font-mono text-xs font-bold uppercase tracking-wider rounded-xl transition shadow-lg flex justify-center items-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed disabled:active:scale-100">
                             <span>Save Answers & Proceed to Calendar Booking</span>
@@ -618,10 +653,33 @@
         // Fetched from the backend (NOTIFY_EMAIL env var) instead of being hardcoded
         // here, so the address never sits in plaintext in the page source.
         let contactEmail = null;
+        let turnstileToken = '';
         fetch(`${API_BASE}/api/contact`, { signal: AbortSignal.timeout(4000) })
             .then(r => r.json())
-            .then(data => { contactEmail = data.email || null; })
+            .then(data => {
+                contactEmail = data.email || null;
+                if (data.turnstile_site_key) loadTurnstile(data.turnstile_site_key);
+            })
             .catch(() => { /* Calendar invite still works, just without a pre-filled host guest. */ });
+
+        // Cloudflare Turnstile: only loaded/rendered when the backend actually
+        // has a site key configured (TURNSTILE_SITE_KEY unset = feature stays
+        // fully inactive, submission works exactly as before).
+        function loadTurnstile(siteKey) {
+            window.onTurnstileLoad = () => {
+                turnstile.render('#turnstile-widget', {
+                    sitekey: siteKey,
+                    callback: (token) => { turnstileToken = token; },
+                    'expired-callback': () => { turnstileToken = ''; }
+                });
+                document.getElementById('turnstile-widget').classList.remove('hidden');
+            };
+            const script = document.createElement('script');
+            script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onTurnstileLoad&render=explicit';
+            script.async = true;
+            script.defer = true;
+            document.head.appendChild(script);
+        }
 
         // Timezone detection: native Intl API, no service/dependency needed. There's
         // no chosen meeting time anywhere in this flow yet (that happens when the
@@ -963,10 +1021,13 @@
         // feedback instead of waiting on a round trip - the server still re-validates
         // everything itself, since client checks are trivially bypassed.
         const FIELD_RULES = {
-            'q-name': { required: 'Name is required', maxLength: 120, tooLong: 'Name too long (max 120 chars)' },
-            'q-org': { required: 'Organization is required', maxLength: 100, tooLong: 'Organization name too long (max 100 chars)' },
-            'q-role': { required: 'Role is required', maxLength: 150, tooLong: 'Role too long (max 150 chars)' },
-            'q-notes': { required: "Please share what you'd like to discuss", maxLength: 4000, tooLong: 'Message too long (max 4000 chars)' }
+            'q-name': {
+                required: 'Name is required', maxLength: 100, tooLong: 'Name too long (max 100 chars)',
+                pattern: /^[\p{L}\s'-]+$/u, invalid: 'Name can only contain letters, spaces, and hyphens.'
+            },
+            'q-org': { required: 'Organization is required', maxLength: 150, tooLong: 'Organization name too long (max 150 chars)' },
+            'q-role': { required: 'Role is required', maxLength: 100, tooLong: 'Role too long (max 100 chars)' },
+            'q-notes': { required: "Please share what you'd like to discuss", maxLength: 2000, tooLong: 'Message too long (max 2000 chars)' }
         };
         const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -990,6 +1051,7 @@
             let message = '';
             if (!value) message = rule.required;
             else if (value.length > rule.maxLength) message = rule.tooLong;
+            else if (rule.pattern && !rule.pattern.test(value)) message = rule.invalid;
             return !setFieldError(id, message);
         }
 
@@ -1121,6 +1183,29 @@
             panel.classList.remove('hidden');
         }
 
+        // Retries transient failures (network errors, timeouts, 5xx) with
+        // exponential backoff (1s, 2s, 4s + jitter). Never retries 4xx client
+        // errors (validation/rate-limit/origin/verification) - those won't
+        // succeed on retry, so retrying would just be wrong.
+        async function fetchWithRetry(url, options, maxRetries = 2) {
+            for (let attempt = 0; ; attempt++) {
+                try {
+                    const response = await fetch(url, options);
+                    if (response.status < 500 || attempt >= maxRetries) return response;
+                    // 5xx: worth a retry.
+                } catch (error) {
+                    if (attempt >= maxRetries) throw error;
+                    // Network error/timeout: worth a retry.
+                }
+                const delay = Math.min(1000 * 2 ** attempt, 4000) + Math.random() * 300;
+                await new Promise(resolve => setTimeout(resolve, delay));
+            }
+        }
+
+        // Ambient connectivity feedback, independent of any in-flight submission.
+        window.addEventListener('offline', () => showToast("You're offline. Reconnect to submit the form.", 'error'));
+        window.addEventListener('online', () => showToast("You're back online.", 'success'));
+
         async function submitQuestionnaire(event) {
             event.preventDefault();
 
@@ -1132,46 +1217,88 @@
 
             const submitBtn = document.getElementById('submit-btn');
             const errorEl = document.getElementById('submit-error');
+            const questionnaireCard = document.getElementById('questionnaire-card');
+            const calendarContainer = document.getElementById('calendar-container');
+
+            function showSubmitError(message) {
+                errorEl.textContent = message;
+                errorEl.classList.remove('hidden');
+                showToast(message, 'error');
+                submitBtn.textContent = "Save Answers & Proceed to Calendar Booking →";
+                submitBtn.disabled = false;
+                // Turnstile tokens are single-use - reset so a retry gets a fresh one.
+                if (typeof turnstile !== 'undefined') {
+                    turnstileToken = '';
+                    turnstile.reset();
+                }
+            }
+
             errorEl.classList.add('hidden');
             submitBtn.innerHTML = '<span class="orbit-loader"><span></span><span></span></span><span>Processing...</span>';
             submitBtn.disabled = true;
 
-            const payload = {
-                topic: selectedTopicName,
-                name: document.getElementById('q-name').value.trim(),
-                email: document.getElementById('q-email').value.trim(),
-                organization: document.getElementById('q-org').value.trim(),
-                role: document.getElementById('q-role').value.trim(),
-                notes: document.getElementById('q-notes').value.trim(),
-                consent: document.getElementById('q-consent').checked,
-                timezone: getTimezoneInfo().zone,
-                website: document.getElementById('q-website').value
-            };
-
-            document.getElementById('calendar-link').href = buildCalendarLink(payload);
-
-            const questionnaireCard = document.getElementById('questionnaire-card');
-            const calendarContainer = document.getElementById('calendar-container');
-
-            if (payload.website) {
-                // Honeypot filled in - almost certainly a bot. Skip the network call
-                // entirely and just show the same success state a real visitor gets.
-                revealCalendar(questionnaireCard, calendarContainer);
-                return;
-            }
-
+            // Everything below is wrapped in one try/catch on purpose: this is the
+            // vanilla-JS equivalent of a React error boundary for this form - no
+            // matter what throws (a network failure, a bug, anything unexpected),
+            // the user always gets a clear message and a re-enabled button instead
+            // of a permanently stuck "Processing..." state.
             try {
-                // Connects to Python FastAPI Backend (emails the submission to me).
-                // Bounded with a timeout so a missing/unreachable backend fails fast
-                // instead of leaving the visitor stuck on "Processing via API..."
-                const response = await fetch(`${API_BASE}/api/meetings`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload),
-                    signal: AbortSignal.timeout(6000)
-                });
+                const payload = {
+                    topic: selectedTopicName,
+                    name: document.getElementById('q-name').value.trim(),
+                    email: document.getElementById('q-email').value.trim(),
+                    organization: document.getElementById('q-org').value.trim(),
+                    role: document.getElementById('q-role').value.trim(),
+                    notes: document.getElementById('q-notes').value.trim(),
+                    consent: document.getElementById('q-consent').checked,
+                    timezone: getTimezoneInfo().zone,
+                    website: document.getElementById('q-website').value,
+                    turnstile_token: turnstileToken
+                };
 
-                const result = await response.json();
+                document.getElementById('calendar-link').href = buildCalendarLink(payload);
+
+                if (payload.website) {
+                    // Honeypot filled in - almost certainly a bot. Skip the network call
+                    // entirely and just show the same success state a real visitor gets.
+                    revealCalendar(questionnaireCard, calendarContainer);
+                    return;
+                }
+
+                if (!navigator.onLine) {
+                    showSubmitError("You're offline. Please check your connection and try again.");
+                    return;
+                }
+
+                let response;
+                try {
+                    response = await fetchWithRetry(`${API_BASE}/api/meetings`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload),
+                        signal: AbortSignal.timeout(6000)
+                    });
+                } catch (networkError) {
+                    // Fallback graceful progression if the backend isn't reachable at
+                    // all (e.g. local dev without the API running) - the calendar
+                    // link above still works since it needs no backend.
+                    const isTimeout = networkError.name === 'TimeoutError' || networkError.name === 'AbortError';
+                    console.error('API connection error:', networkError);
+                    if (isTimeout) {
+                        showSubmitError('The request timed out. Please check your connection and try again.');
+                    } else {
+                        revealCalendar(questionnaireCard, calendarContainer);
+                    }
+                    return;
+                }
+
+                let result = {};
+                try {
+                    result = await response.json();
+                } catch (parseError) {
+                    // Response wasn't valid JSON (e.g. a raw platform error page) -
+                    // fall through to the status-code-based message below.
+                }
 
                 if (response.ok) {
                     showToast('Thanks! Check your calendar link below.', 'success');
@@ -1183,21 +1310,23 @@
                     setFieldError('q-email', '');
                     document.getElementById('q-consent-error').classList.add('hidden');
                     revealCalendar(questionnaireCard, calendarContainer);
-                } else {
-                    const message = response.status === 429
-                        ? "Too many submissions from this connection. Please try again later."
-                        : "Couldn't submit the questionnaire. Please check your inputs and try again.";
-                    errorEl.textContent = message;
-                    errorEl.classList.remove('hidden');
-                    showToast(message, 'error');
-                    submitBtn.textContent = "Save Answers & Proceed to Calendar Booking →";
-                    submitBtn.disabled = false;
+                    return;
                 }
-            } catch (error) {
-                console.error("API Connection Error:", error);
-                // Fallback graceful progression if backend server isn't spun up yet.
-                // The calendar link above still works since it needs no backend.
-                revealCalendar(questionnaireCard, calendarContainer);
+
+                // Prefer the backend's own specific error detail (it already returns
+                // clear messages for rate-limit/origin/verification/validation
+                // failures) and fall back to a status-code-based message otherwise.
+                let message = result.detail;
+                if (!message) {
+                    if (response.status === 429) message = 'Too many submissions from this connection. Please try again later.';
+                    else if (response.status === 422) message = 'Please check your inputs and try again.';
+                    else if (response.status >= 500) message = "Something went wrong on our end. Please try again in a moment.";
+                    else message = "Couldn't submit the questionnaire. Please check your inputs and try again.";
+                }
+                showSubmitError(message);
+            } catch (unexpectedError) {
+                console.error('Unexpected form error:', unexpectedError);
+                showSubmitError('Something unexpected went wrong. Please try again.');
             }
         }
 
